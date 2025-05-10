@@ -1,1 +1,1 @@
-Sitemap: /sitemap.xml
+Sitemap: https://nadzw.github.io/sitemap.xml
