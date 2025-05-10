@@ -1,0 +1,89 @@
+---
+layout: default
+---
+
+<main class="project-page">
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+        {% if page.role or page.date or page.end_date or page.engine%}
+        <p class="project-meta">
+            {{ page.company }} | {{ page.role }} | {{ page.date | date: "%B %Y" }}{% if page.end_date %} – {{ page.end_date | date: "%B %Y" }} {% endif %} | {{ page.engine }}
+        </p>
+        {% endif %}
+
+        {% if page.banner %}
+        <img src="{{ page.banner }}" alt="{{ page.title }} screenshot" class="project-image" />
+        {% endif %}
+
+        <section class="project-section">
+            <h2>Summary</h2>
+            <p>{{ page.summary }}</p>
+        </section>
+
+        {% if page.responsibilities %}
+        <section class="project-section">
+            <h2>Responsibilities</h2>
+            <ul>
+                {% for item in page.responsibilities %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        {% if page.skills %}
+        <section class="project-section">
+            <h2>Skills</h2>
+            <ul>
+                {% for skill in page.skills %}
+                <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        {% if page.link %}
+        <a href="{{ page.link }}" target="_blank" class="button-link">Play Now</a>
+        {% endif %}
+        
+        {% if page.video %}
+        <div class="project-video">
+            <video controls width="720px" id="autoplay" muted>
+                <source src="{{ page.video }}" type="video/mp4">
+            </video>
+        </div>
+        <script>
+            window.onload = function(){
+                document.getElementById("autoplay").play()
+            }
+        </script>
+        {% endif %}
+
+
+        {% if page.images %}
+        <div class="carousel">
+            <div class="carousel-images">
+                {% for img in page.images %}
+                <div class="aspect-ratio-container">
+                    <img src="{{ img }}" alt="Project Image {{ forloop.index }}">
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-button prev" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="carousel-button next" onclick="moveSlide(1)">&#10095;</button>
+        </div>
+        {% endif %}
+
+    </div>
+</main>
+
+<script>
+    let currentSlide = 0;
+
+    function moveSlide(direction) {
+        const slides = document.querySelector('.carousel-images');
+        const totalSlides = slides.children.length;
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+</script>

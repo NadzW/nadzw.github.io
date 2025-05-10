@@ -1,0 +1,14 @@
+---
+layout: default
+---
+
+{{ content }}
+
+<head>
+    <meta http-equiv="refresh" content="0; url={{ page.redirect_to }}" />
+    <link rel="canonical" href="{{ page.redirect_to }}" />
+</head>
+
+<body>
+<h1>Redirecting to <a href="{{ page.redirect_to }}">{{ page.redirect_text }}</a></h1>
+</body>
