@@ -1,0 +1,236 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>FPS Movement Locomotion - Nadeem Wali</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Nadeem Wali">
+  
+  <meta property="article:author" content="Nadeem Wali">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Nadeem Wali">
+<meta property="og:title" content="FPS Movement Locomotion">
+<meta property="og:url" content="/portfolio/fps-movement-locomotion/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2024-04-01T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/portfolio/fps-movement-locomotion/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--project" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Nadeem Wali
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/portfolio/"
+                
+                
+              >Portfolio</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      <main class="project-page">
+    <div class="container">
+        <h1>FPS Movement Locomotion</h1>
+        
+        <p class="project-meta">
+            Solo | Game Developer | April 2024 | Unreal Engine 5
+        </p>
+        
+
+        
+
+        <section class="project-section">
+            <h2>Summary</h2>
+            <p><p>This is a project I started to improve both my c++ and blueprint skills. This involved researching and analysing  how source games (TF2 + CSGO) and Apex Legends handled their movements, and translating those mechanics into Unreal.  Inevitably, making a mix of both. In this project, I was able to recreate the bunny hopping and air strafing from source  games and mixed it with the wall running and wall climbing from Apex Legends or Titanfall to create a smooth FPS locomotion system.  </p>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/8gvlUPBfNUE?si=3ia1jUj5hPdRbccd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p>After getting movement working, I also implemented the basics of UE’s Gameplay Ability System in order to make weapons  and shooting working. I was able to create a system where I had a base weapon that can be populated with a weapon data asset that handled the weapons data and shooting mechanics, making the weapons development process modular and easy to do. </p>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/DvT6ET3Y9b4?si=7ezKTO9ejfv7EYWU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</p>
+        </section>
+
+        
+
+        
+        <section class="project-section">
+            <h2>Skills</h2>
+            <ul>
+                
+                <li>Movement Design</li>
+                
+                <li>Gameplay programming</li>
+                
+                <li>Unreal blueprints and C++</li>
+                
+            </ul>
+        </section>
+        
+
+        
+        
+        
+
+
+        
+
+    </div>
+</main>
+
+<script>
+    let currentSlide = 0;
+
+    function moveSlide(direction) {
+        const slides = document.querySelector('.carousel-images');
+        const totalSlides = slides.children.length;
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+</script>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/NadzW" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 <a href="">Nadeem Wali</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
