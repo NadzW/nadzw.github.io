@@ -23,9 +23,7 @@ personal_cards:
     url: /portfolio/fps-movement-locomotion/
     image: /assets/images/card-fps.png
     description: A UE5 c++ and blueprint FPS locomotion system.
-  
-    
-professional_cards:
+university_cards:
   - title: Fishy Business
     url: /portfolio/fishy-business/
     image: /assets/images/card-fb.png
@@ -38,6 +36,6 @@ professional_cards:
     url: /portfolio/vehicle-customisation/
     image: /assets/images/card-vcs.png
     description: A vehicle customisation system made in UE5.
-
+professional_cards:
 ---
 
