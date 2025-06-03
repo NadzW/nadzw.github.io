@@ -164,3 +164,19 @@ h1 {
   height: 100%;
   object-fit: contain; /* or 'contain' if you want full visibility */
 }
+
+.blog-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.blog-card h3 {
+  margin-top: 0;
+  color: #fff;
+}
+.blog-card p {
+  color: #ccc;
+}
