@@ -1,4 +1,10 @@
 var store = [{
+        "title": "Vehicle Customisation System: Journal",
+        "excerpt":"Master Material Setup When it comes to handling the material of each mesh, I decided to set up a master material that is capable of handling all of the customisation options and their different properties. Using one master material is beneficial as it is more performant than just giving each...","categories": ["devlog"],
+        "tags": ["postmortem","journal","vehicle-customisation-system"],
+        "url": "/blog/vcs-journal/",
+        "teaser": null
+      },{
         "title": "Punch-Em-Up",
         "excerpt":" ","categories": [],
         "tags": [],
