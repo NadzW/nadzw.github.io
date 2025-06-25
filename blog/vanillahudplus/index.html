@@ -1,0 +1,455 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How a mod I created for PAYDAY 3 made it into the base game - Nadeem Wali</title>
+<meta name="description" content="VanillaHUD+ was added to PAYDAY3">
+
+
+  <meta name="author" content="Nadeem Wali">
+  
+  <meta property="article:author" content="Nadeem Wali">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Nadeem Wali">
+<meta property="og:title" content="How a mod I created for PAYDAY 3 made it into the base game">
+<meta property="og:url" content="https://nadzw.github.io/blog/vanillahudplus/">
+
+
+  <meta property="og:description" content="VanillaHUD+ was added to PAYDAY3">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2025-06-25T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://nadzw.github.io/blog/vanillahudplus/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Nadeem Wali
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/portfolio/"
+                
+                
+              >Portfolio</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/blog/"
+                
+                
+              >Blogs</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      <link href="/lightbox/css/lightbox.css" rel="stylesheet" />
+<script src="/lightbox/js/lightbox.js"></script>
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How a mod I created for PAYDAY 3 made it into the base game">
+    <meta itemprop="description" content="VanillaHUD+ was added to PAYDAY3">
+    <meta itemprop="datePublished" content="2025-06-25T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://nadzw.github.io/blog/vanillahudplus/" itemprop="url">How a mod I created for PAYDAY 3 made it into the base game
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>When I first began working on VanillaHUD+, the goal was simple: improve Payday 3’s team HUD while staying true to its 
+original visual language. The vanilla HUD at launch was clean but lacked clarity in certain areas. Information like crew 
+ammo, tools, placeables and overkill status was missing - making teamwork unnecessarily harder as people would be forced to 
+chat or use the chat wheel to ask for extra ammo.</p>
+
+<p>I wanted to address that.</p>
+
+<h3 id="the-design-philosophy-behind-vanillahud">The Design Philosophy Behind VanillaHUD+</h3>
+
+<p>Working with an incredible concept artist from the community (<a href="https://modworkshop.net/user/FlamingFury1000">FlamingFury1000</a>),
+the vision behind VanillaHUD+ was to enhance readability, efficiency, and consistency, while keeping the aesthetic 
+“vanilla-adjacent.” No flashy effects, no intrusive overlays—just cleaner layout logic and a focus on what matters during gameplay.</p>
+
+<p>Some of the key changes I introduced:</p>
+<ul>
+  <li>Compact but rich player panels that emphasized key stats like renown level, ammo count, and equipment and overkill status.</li>
+  <li>Dynamic Heister Potraits that change whether the player is masked or unmasked</li>
+  <li>Hostage counter</li>
+  <li>Visual hierarchy tweaks to reduce clutter and boost legibility.</li>
+  <li>Performance optimisation by removing overused canvas panels.</li>
+</ul>
+
+<p><img src="/assets/images/blogs/vhudplus/modpreview.gif" alt="modpreview.gif" /></p>
+
+<p><img src="/assets/images/blogs/vhudplus/maskpreview.gif" alt="maskpreview.gif" /></p>
+
+<p><img src="/assets/images/blogs/vhudplus/hostagecounter.gif" alt="hostagecounter.gif" /></p>
+
+<h3 id="what-was-introduced-in-patch-214">What was introduced in patch 2.1.4</h3>
+
+<p>The official patch 2.1.4 arrived with changes that closely mirror many decisions from VanillaHUD+. With renown levels now showing,
+and the crewmates health and armor status being extended to also show ammo and equipment. The visual style with these changes are 
+almost identical with VanillaHUD+ albeit some padding differences. The new update also introduced some very nice changes to the 
+defeat states and downed counter which differ from VanillaHUD+. However, the dynamic heister potraits and overkill status seen in 
+VanillaHUD+ are still missing from the base game.</p>
+
+<p><a href="/assets/images/blogs/vhudplus/comparisons.jpeg" data-lightbox="hud-comparison">
+  <img src="/assets/images/blogs/vhudplus/comparisons.jpeg" alt="PD3 HUD Comparison" />
+</a></p>
+
+<h3 id="coincidence-or-community-inspiration">Coincidence or Community Inspiration?</h3>
+
+<p>I don’t work at Starbreeze. I don’t have insider access. So I can’t say for certain whether my mod directly inspired these official 
+changes.</p>
+
+<p>But the similarities are striking.</p>
+
+<p>It’s entirely possible that the Payday 3 team had similar goals, arrived at the same usability issues, and reached similar 
+conclusions. Or—maybe—they saw what VanillaHUD+ offered and decided to integrate those ideas into the base game. 
+Either way, it’s an encouraging sign.</p>
+
+<p>This is what I love about modding. It’s not just a personal sandbox. It’s a dialogue. Sometimes, that dialogue loops back
+into the very games we love.</p>
+
+<h3 id="technical-notes">Technical Notes</h3>
+<p>VanillaHUD+ was developed using:</p>
+<ul>
+  <li>Figma</li>
+  <li>Unreal Engine 4.27</li>
+  <li>Custom Blueprint + UMG injections</li>
+  <li>Widget recreations from Uasset and <a href="https://github.com/trumank/kismet-analyzer">Kismet Analysis</a></li>
+</ul>
+
+<p>This project was not just a UI reskin - it required reverse engineering, hooking into HUD elements, and patching logic without 
+breaking the core game loop. It was both a design and technical challenge.</p>
+
+<h3 id="what-i-learned">What I Learned</h3>
+
+<p>This experience deepened my skills in:</p>
+<ul>
+  <li>UI/UX design for real-time games</li>
+  <li>Working within tight engine constraints</li>
+  <li>Respecting and extending a game’s original artistic direction</li>
+  <li>Creating tools and mods that are maintainable post-patch</li>
+</ul>
+
+<p>It also reminded me that modding can be more than a hobby - it can be a form of prototyping, feedback, and design leadership.</p>
+
+<h3 id="final-thoughts">Final Thoughts</h3>
+
+<p>Whether the similarities are coincidental or not, it’s incredibly rewarding to see a personal project align with an official design 
+direction. If nothing else, it validates the design choices I made and reaffirms my belief in the power of player-driven iteration.</p>
+
+<p>If you’re a developer, studio, or team interested in design-focused, technically capable talent - I’m currently open to 
+opportunities. Let’s build better HUDs and UI, together.</p>
+
+<p>Although it is now outdated, you can still view <a href="https://modworkshop.net/mod/50675">VanillaHUD+ mod on ModWorkshop</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#payday3" class="page__taxonomy-item p-category" rel="tag">payday3</a><span class="sep">, </span>
+    
+      <a href="/tags/#postmortem" class="page__taxonomy-item p-category" rel="tag">postmortem</a><span class="sep">, </span>
+    
+      <a href="/tags/#vanillahudplus" class="page__taxonomy-item p-category" rel="tag">vanillahudplus</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#devlog" class="page__taxonomy-item p-category" rel="tag">devlog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2025-06-25T00:00:00+00:00">June 25, 2025</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://twitter.com/intent/tweet?text=How+a+mod+I+created+for+PAYDAY+3+made+it+into+the+base+game%20https%3A%2F%2Fnadzw.github.io%2Fblog%2Fvanillahudplus%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnadzw.github.io%2Fblog%2Fvanillahudplus%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://nadzw.github.io/blog/vanillahudplus/" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/vcs-journal/" class="pagination--pager" title="Vehicle Customisation System: Journal">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You may also enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/vcs-journal/" rel="permalink">Vehicle Customisation System: Journal
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          14 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">A breakdown of how it was made and how I felt about the project after
+</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/NadzW" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2025 <a href="https://nadzw.github.io">Nadeem Wali</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

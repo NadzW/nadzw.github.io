@@ -1,4 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://nadzw.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://nadzw.github.io/" rel="alternate" type="text/html" /><updated>2025-06-03T12:58:55+00:00</updated><id>https://nadzw.github.io/feed.xml</id><title type="html">Nadeem Wali</title><subtitle>A game design graduate specializing in technical design and technical art, with a strong focus on Unreal Engine. I enjoy bridging the gap between art and programming, creating efficient systems that enhance gameplay and visuals.</subtitle><author><name>Nadeem Wali</name><email>Nadeem.wali.2001@gmail.com</email></author><entry><title type="html">Vehicle Customisation System: Journal</title><link href="https://nadzw.github.io/blog/vcs-journal/" rel="alternate" type="text/html" title="Vehicle Customisation System: Journal" /><published>2025-06-03T00:00:00+00:00</published><updated>2025-06-03T00:00:00+00:00</updated><id>https://nadzw.github.io/blog/vcs-journal</id><content type="html" xml:base="https://nadzw.github.io/blog/vcs-journal/"><![CDATA[<h3 id="master-material-setup">Master Material Setup</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://nadzw.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://nadzw.github.io/" rel="alternate" type="text/html" /><updated>2025-06-25T19:44:23+00:00</updated><id>https://nadzw.github.io/feed.xml</id><title type="html">Nadeem Wali</title><subtitle>A game design graduate specializing in technical design and technical art, with a strong focus on Unreal Engine. I enjoy bridging the gap between art and programming, creating efficient systems that enhance gameplay and visuals.</subtitle><author><name>Nadeem Wali</name><email>Nadeem.wali.2001@gmail.com</email></author><entry><title type="html">How a mod I created for PAYDAY 3 made it into the base game</title><link href="https://nadzw.github.io/blog/vanillahudplus/" rel="alternate" type="text/html" title="How a mod I created for PAYDAY 3 made it into the base game" /><published>2025-06-25T00:00:00+00:00</published><updated>2025-06-25T00:00:00+00:00</updated><id>https://nadzw.github.io/blog/VanillaHUDPlus</id><content type="html" xml:base="https://nadzw.github.io/blog/vanillahudplus/"><![CDATA[<p>When I first began working on VanillaHUD+, the goal was simple: improve Payday 3’s team HUD while staying true to its 
+original visual language. The vanilla HUD at launch was clean but lacked clarity in certain areas. Information like crew 
+ammo, tools, placeables and overkill status was missing - making teamwork unnecessarily harder as people would be forced to 
+chat or use the chat wheel to ask for extra ammo.</p>
+
+<p>I wanted to address that.</p>
+
+<h3 id="the-design-philosophy-behind-vanillahud">The Design Philosophy Behind VanillaHUD+</h3>
+
+<p>Working with an incredible concept artist from the community (<a href="https://modworkshop.net/user/FlamingFury1000">FlamingFury1000</a>),
+the vision behind VanillaHUD+ was to enhance readability, efficiency, and consistency, while keeping the aesthetic 
+“vanilla-adjacent.” No flashy effects, no intrusive overlays—just cleaner layout logic and a focus on what matters during gameplay.</p>
+
+<p>Some of the key changes I introduced:</p>
+<ul>
+  <li>Compact but rich player panels that emphasized key stats like renown level, ammo count, and equipment and overkill status.</li>
+  <li>Dynamic Heister Potraits that change whether the player is masked or unmasked</li>
+  <li>Hostage counter</li>
+  <li>Visual hierarchy tweaks to reduce clutter and boost legibility.</li>
+  <li>Performance optimisation by removing overused canvas panels.</li>
+</ul>
+
+<p><img src="/assets/images/blogs/vhudplus/modpreview.gif" alt="modpreview.gif" /></p>
+
+<p><img src="/assets/images/blogs/vhudplus/maskpreview.gif" alt="maskpreview.gif" /></p>
+
+<p><img src="/assets/images/blogs/vhudplus/hostagecounter.gif" alt="hostagecounter.gif" /></p>
+
+<h3 id="what-was-introduced-in-patch-214">What was introduced in patch 2.1.4</h3>
+
+<p>The official patch 2.1.4 arrived with changes that closely mirror many decisions from VanillaHUD+. With renown levels now showing,
+and the crewmates health and armor status being extended to also show ammo and equipment. The visual style with these changes are 
+almost identical with VanillaHUD+ albeit some padding differences. The new update also introduced some very nice changes to the 
+defeat states and downed counter which differ from VanillaHUD+. However, the dynamic heister potraits and overkill status seen in 
+VanillaHUD+ are still missing from the base game.</p>
+
+<p><a href="/assets/images/blogs/vhudplus/comparisons.jpeg" data-lightbox="hud-comparison">
+  <img src="/assets/images/blogs/vhudplus/comparisons.jpeg" alt="PD3 HUD Comparison" />
+</a></p>
+
+<h3 id="coincidence-or-community-inspiration">Coincidence or Community Inspiration?</h3>
+
+<p>I don’t work at Starbreeze. I don’t have insider access. So I can’t say for certain whether my mod directly inspired these official 
+changes.</p>
+
+<p>But the similarities are striking.</p>
+
+<p>It’s entirely possible that the Payday 3 team had similar goals, arrived at the same usability issues, and reached similar 
+conclusions. Or—maybe—they saw what VanillaHUD+ offered and decided to integrate those ideas into the base game. 
+Either way, it’s an encouraging sign.</p>
+
+<p>This is what I love about modding. It’s not just a personal sandbox. It’s a dialogue. Sometimes, that dialogue loops back
+into the very games we love.</p>
+
+<h3 id="technical-notes">Technical Notes</h3>
+<p>VanillaHUD+ was developed using:</p>
+<ul>
+  <li>Figma</li>
+  <li>Unreal Engine 4.27</li>
+  <li>Custom Blueprint + UMG injections</li>
+  <li>Widget recreations from Uasset and <a href="https://github.com/trumank/kismet-analyzer">Kismet Analysis</a></li>
+</ul>
+
+<p>This project was not just a UI reskin - it required reverse engineering, hooking into HUD elements, and patching logic without 
+breaking the core game loop. It was both a design and technical challenge.</p>
+
+<h3 id="what-i-learned">What I Learned</h3>
+
+<p>This experience deepened my skills in:</p>
+<ul>
+  <li>UI/UX design for real-time games</li>
+  <li>Working within tight engine constraints</li>
+  <li>Respecting and extending a game’s original artistic direction</li>
+  <li>Creating tools and mods that are maintainable post-patch</li>
+</ul>
+
+<p>It also reminded me that modding can be more than a hobby - it can be a form of prototyping, feedback, and design leadership.</p>
+
+<h3 id="final-thoughts">Final Thoughts</h3>
+
+<p>Whether the similarities are coincidental or not, it’s incredibly rewarding to see a personal project align with an official design 
+direction. If nothing else, it validates the design choices I made and reaffirms my belief in the power of player-driven iteration.</p>
+
+<p>If you’re a developer, studio, or team interested in design-focused, technically capable talent - I’m currently open to 
+opportunities. Let’s build better HUDs and UI, together.</p>
+
+<p>Although it is now outdated, you can still view <a href="https://modworkshop.net/mod/50675">VanillaHUD+ mod on ModWorkshop</a></p>]]></content><author><name>Nadeem Wali</name><email>Nadeem.wali.2001@gmail.com</email></author><category term="devlog" /><category term="postmortem" /><category term="vanillahudplus" /><category term="payday3" /><summary type="html"><![CDATA[VanillaHUD+ was added to PAYDAY3]]></summary></entry><entry><title type="html">Vehicle Customisation System: Journal</title><link href="https://nadzw.github.io/blog/vcs-journal/" rel="alternate" type="text/html" title="Vehicle Customisation System: Journal" /><published>2025-06-03T00:00:00+00:00</published><updated>2025-06-03T00:00:00+00:00</updated><id>https://nadzw.github.io/blog/vcs-journal</id><content type="html" xml:base="https://nadzw.github.io/blog/vcs-journal/"><![CDATA[<h3 id="master-material-setup">Master Material Setup</h3>
 
 <p>When it comes to handling the material of each mesh, I decided to set up a master material that is capable of handling all of 
 the customisation options and their different properties. Using one master material is beneficial as it is more performant than 

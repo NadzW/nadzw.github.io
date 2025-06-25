@@ -5,6 +5,12 @@ var store = [{
         "url": "/blog/vcs-journal/",
         "teaser": null
       },{
+        "title": "How a mod I created for PAYDAY 3 made it into the base game",
+        "excerpt":"When I first began working on VanillaHUD+, the goal was simple: improve Payday 3’s team HUD while staying true to its original visual language. The vanilla HUD at launch was clean but lacked clarity in certain areas. Information like crew ammo, tools, placeables and overkill status was missing - making...","categories": ["devlog"],
+        "tags": ["postmortem","vanillahudplus","payday3"],
+        "url": "/blog/vanillahudplus/",
+        "teaser": null
+      },{
         "title": "Punch-Em-Up",
         "excerpt":" ","categories": [],
         "tags": [],
