@@ -2,8 +2,46 @@
 layout: default
 ---
 
+{% if page.highlighted_card %}
+<section class="highlighted-banner">
+  <div class="highlighted-content">
+    <div class="highlighted-image">
+      <a href="{{ page.highlighted_card.url }}">
+        <img src="{{ page.highlighted_card.image }}" alt="{{ page.highlighted_card.title }}">
+      </a>
+    </div>
+    <div class="highlighted-text">
+      <h2>Highlighted Project</h2>
+      <h1>{{ page.highlighted_card.title }}</h1>
+      <p>{{ page.highlighted_card.description }}</p>
+      <a class="highlighted-button" href="{{ page.highlighted_card.url }}">View Project</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
 {{ content }}
 
+{% if page.professional_cards %}
+<div class="page__content">
+  <h1>Professional Projects</h1>
+  <div class="cards-container">
+    {% for card in page.professional_cards %}
+    <div class="card">
+      <a href="{{ card.url }}">
+        <img src="{{ card.image }}" alt="{{ card.title }}">
+        <div class="card-content">
+          <h2>{{ card.title }}</h2>
+          <p>{{ card.description }}</p>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<hr>
+{% endif %}
 {% if page.personal_cards %}
 <div class="page__content">
     <h1>Personal Projects</h1>
@@ -41,22 +79,4 @@ layout: default
     </div>
 </div>
 {% endif %}
-<hr>
-{% if page.professional_cards %}
-<div class="page__content">
-  <h1>Professional Projects</h1>
-  <div class="cards-container">
-    {% for card in page.professional_cards %}
-    <div class="card">
-      <a href="{{ card.url }}">
-        <img src="{{ card.image }}" alt="{{ card.title }}">
-        <div class="card-content">
-          <h2>{{ card.title }}</h2>
-          <p>{{ card.description }}</p>
-        </div>
-      </a>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-{% endif %}
+

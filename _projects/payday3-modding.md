@@ -32,6 +32,12 @@ summary: >
   <img src="https://storage.modworkshop.net/mods/images/cWYE3FKfnPWxKe1WMS2TnRHUKQdYKojMU2iJB27a.webp"></img>
   <p> A mod that enhances the default HUD by adding detailed crew status, ammo counters, equipment indicators, and dynamic portraits.
   This is currently one of the only Payday 3 HUD mods and is one of the most popular mods in the game (as of typing this). </p>
+
+  <div class="blog-card">
+    <h3>📘 Related Blog Post</h3>
+    <p>How VanillaHUD+ was added into the base game for everyone to use!</p>
+    <a href="/blog/vanillahudplus/" class="button-link">Read the blog</a>
+  </div>
   
   <p>With this mod, I worked with a concept artist who created a concept for how the UI should be laid out. Working closely, and 
   relying on them for continuous feedback, I spent a lot of time on this project reverse engineering and recreating the games

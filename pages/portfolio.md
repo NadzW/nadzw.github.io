@@ -2,6 +2,11 @@
 permalink: /portfolio/
 layout: cards
 title: Portfolio
+highlighted_card:
+  title: Vehicle Customisation System
+  url: /portfolio/vehicle-customisation/
+  image: /assets/images/card-vcs.png
+  description: A vehicle customisation system made in UE5.
 personal_cards: 
   - title: Punch-Em-Up
     url: /portfolio/punch-em-up/

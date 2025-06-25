@@ -188,3 +188,56 @@ footer {
 article.post {
   margin-bottom: 5em;
 }
+
+.highlighted-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  background-color: #111;
+  color: white;
+  border-bottom: 2px solid #333;
+}
+
+.highlighted-content {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  gap: 2rem;
+  align-items: center;
+}
+
+.highlighted-image img {
+  max-width: 400px;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.highlighted-text {
+  flex: 1;
+  min-width: 250px;
+}
+
+.highlighted-text h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.highlighted-text p {
+  margin-bottom: 1rem;
+}
+
+.highlighted-button, .highlighted-button:visited {
+  display: inline-block;
+  background: #e21d7c;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.highlighted-button:hover {
+  background: #751040;
+}
