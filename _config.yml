@@ -78,7 +78,7 @@ baidu_site_verification  :
 
 # Social Sharing
 twitter:
-  username               :
+  username               : 
 facebook:
   username               :
   app_id                 :
@@ -113,13 +113,22 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/NadzW"
+    - label: "LinkedIN"
+      icon: "fa-brands fa-linkedin"
+      url: "https://www.linkedin.com/in/nadeem-wali-709707277/"
 
 # Site Footer
 footer:
   links:
+    - label: "Itch.io"
+      icon: "fa-brands fa-itch-io"
+      url: "https://nadzw.itch.io"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/NadzW"
+    - label: "LinkedIN"
+      icon: "fa-brands fa-linkedin"
+      url: "https://www.linkedin.com/in/nadeem-wali-709707277/"
 
 
 # Reading Files
