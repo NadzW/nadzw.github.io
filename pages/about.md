@@ -16,7 +16,7 @@ caption="🎮 Game Designer / Technical Designer / Problem Solver" %}
 
 ---
 
-A game design graduate specializing in TECHNICAL DESIGN and QUEST DESIGN. I develop modular systems, HUD/UI backend 
+A game design graduate specializing in TECHNICAL DESIGN and SYSTEMS DESIGN. I develop modular systems, HUD/UI backend 
 and exciting levels. I'm passionate about technical problem-solving and designing unique experiences. 
 
 I started creating games in 2015, exploring different engines like 
