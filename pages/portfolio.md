@@ -3,11 +3,11 @@ permalink: /portfolio/
 layout: cards
 title: Portfolio
 highlighted_card:
-  title: Vehicle Customisation System
-  url: /portfolio/vehicle-customisation/
-  image: /assets/images/card-vcs.png
-  description: A vehicle customisation system made in UE5.
-personal_cards: 
+  title: 
+  url: /portfolio/hudcore/
+  image: /assets/images/card-hc.png
+  description: 
+game_design_cards: 
   - title: Punch-Em-Up
     url: /portfolio/punch-em-up/
     image: /assets/images/card-peu.png
@@ -28,7 +28,6 @@ personal_cards:
     url: /portfolio/fps-movement-locomotion/
     image: /assets/images/card-fps.png
     description: A UE5 c++ and blueprint FPS locomotion system.
-university_cards:
   - title: Fishy Business
     url: /portfolio/fishy-business/
     image: /assets/images/card-fb.png
@@ -41,6 +40,14 @@ university_cards:
     url: /portfolio/vehicle-customisation/
     image: /assets/images/card-vcs.png
     description: A vehicle customisation system made in UE5.
-professional_cards:
+uiux_design_cards:
+  - title: HUDCore
+    url: /portfolio/hudcore/
+    image: /assets/images/card-hc.png
+    description: A HUD modding framework for PAYDAY3 + Custom HUD mods.
+  - title: Gran Turismo 5 Menu Redesign
+    url: /portfolio/gt5/
+    image: /assets/images/card-gt5.png
+    description: A redesign of Gran Turismo 5's main menu UI.
 ---
 

@@ -12,11 +12,11 @@ and adding new features that I would personally want to see and use. In the gami
 **Shalashaska**.
 
 {% include figure popup=true image_path="/assets/images/Profile-Picture.jpg" alt="A headshot of a beautiful man!" 
-caption="🎮 Game Designer / Technical Designer / Problem Solver" %}
+caption="🎮 UI Designer / Technical Designer / Problem Solver" %}
 
 ---
 
-A game design graduate specializing in TECHNICAL DESIGN and SYSTEMS DESIGN. I develop modular systems, HUD/UI backend 
+A game design graduate specializing in TECHNICAL DESIGN and UI/UX DESIGN. I develop modular systems, HUD/UI backend 
 and exciting levels. I'm passionate about technical problem-solving and designing unique experiences. 
 
 I started creating games in 2015, exploring different engines like 
@@ -38,7 +38,7 @@ to play the Keyboard.
 - Technical Design & Systems – Designing and implementing modular mechanics, procedural generation, and gameplay
 systems.  
 
-- Game and Quest Design - Designing interesting and unique levels and experiences. 
+- UI/UX Design - Designing and implementing interesting and unique menus and player HUDs. 
 
 - Unreal Engine Expertise – Proficient in Blueprint scripting and C++, with experience in customisation systems, 
 gameplay mechanics and UI/UX development.  
