@@ -47,6 +47,12 @@ var store = [{
         "url": "/portfolio/fps-movement-locomotion/",
         "teaser": null
       },{
+        "title": "Gran Tursimo 5 Menu UI Redesign",
+        "excerpt":" ","categories": [],
+        "tags": [],
+        "url": "/portfolio/gt5/",
+        "teaser": null
+      },{
         "title": "Beat Blitz",
         "excerpt":" ","categories": [],
         "tags": [],
@@ -57,5 +63,11 @@ var store = [{
         "excerpt":" ","categories": [],
         "tags": [],
         "url": "/portfolio/vehicle-customisation/",
+        "teaser": null
+      },{
+        "title": "HUDCore",
+        "excerpt":" ","categories": [],
+        "tags": [],
+        "url": "/portfolio/hudcore/",
         "teaser": null
       }]
