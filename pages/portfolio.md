@@ -8,6 +8,10 @@ highlighted_card:
   image: /assets/images/card-hc.png
   description: 
 game_design_cards: 
+  - title: Nightshift
+    url: /portfolio/nightshift/
+    image: /assets/images/card-ns.webp
+    description: A roguelite street racing tournament, solo developed under PhantomWire Games in UE5.
   - title: Mover Cover System
     url: /portfolio/mover-cover-system/
     image: /assets/images/card-mcs.jpg
