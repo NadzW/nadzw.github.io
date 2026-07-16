@@ -5,7 +5,8 @@ title: "Nightshift"
 role: "Solo Developer (Design, Programming, UI, Art)"
 company: "PhantomWire Games"
 date: September 2024
-engine: "Unreal Engine 5.7"
+end_date: On Hiatus
+engine: "Unreal Engine 5.4-5.7"
 banner: /assets/images/banner-ns.webp
 images:
   - /assets/images/ns-preview01.webp
