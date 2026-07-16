@@ -6,23 +6,38 @@ search: false
 @charset "utf-8";
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+
+/* PhantomWire-style typography — set before the theme partials so our
+   values win over the library's !default fallbacks. */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+// Fallbacks in case a different $minimal_mistakes_skin is ever selected —
+// the phantomwire skin (_sass/minimal-mistakes/skins/_phantomwire.scss)
+// sets the "real" values for these first, so these only apply otherwise.
+$pw-pink: #e11678 !default;
+$pw-pink-dark: #b30f5f !default;
+$pw-black: #080808 !default;
+$pw-dark: #111111 !default;
+$pw-dark-2: #1a1a1a !default;
+$pw-grey-light: #888888 !default;
+
+$global-font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
+$header-font-family: 'Barlow Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
+$sans-serif-narrow: 'Barlow Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
+$monospace: 'Space Mono', Monaco, Consolas, "Lucida Console", monospace !default;
+$border-radius: 0 !default;
+$global-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !default;
+
 @import "minimal-mistakes"; // main partials
 
-/* Cards */
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
-
 // Our variables
-$base-font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$base-font-family: $global-font-family;
 $base-font-size: 16px;
 $base-font-weight: 400;
 $small-font-size: $base-font-size * 0.875;
 $base-line-height: 1.5;
 
 $spacing-unit: 30px;
-
-$text-color: #111;
-$background-color: #fdfdfd;
-$brand-color: #2a7ae2;
 
 $grey-color: #828282;
 $grey-color-light: lighten($grey-color, 40%);
@@ -48,28 +63,43 @@ $on-laptop: 800px;
 }
 
 @import "cards/layout";
-@import "cards/syntax-highlighting";
+// Note: cards/syntax-highlighting.scss is a leftover light-theme code
+// highlighter that fights the dark PhantomWire palette — the theme's own
+// minimal-mistakes/syntax partial (driven by the skin's base00-0f vars)
+// already covers this, so it's intentionally not imported here.
 
 
 .project-page .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  color: #fff; // or your site's text color
+  color: $text-color;
+}
+
+.project-page h1 {
+  text-align: center;
 }
 
 .project-page h2 {
-  margin: 1rem;
+  margin: 2em 0 0.75rem;
 }
 
 .project-meta {
   text-align: center;
+  font-family: $monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $pw-pink;
+  font-style: normal;
+  margin-bottom: 1rem;
 }
 
 .project-image {
   max-width: 100%;
   height: auto;
   margin-bottom: 1rem;
+  filter: saturate(1.05);
 }
 
 .project-video {
@@ -81,33 +111,31 @@ $on-laptop: 800px;
   margin-top: 2rem;
 }
 
-.project-meta {
-  color: #aaa;
-  font-style: italic;
-  margin-bottom: 1rem;
-}
-
-h1 {
-  text-align: center;
-}
-
 .button-link {
-  display: inline-block;
-  background-color: #e21d7c;
-  color: white;
-  padding: 0.5em 1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: $pw-pink;
+  color: #fff;
+  padding: 0.9em 1.8em;
   text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  font-family: $header-font-family;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: $global-transition;
 }
 
 .button-link:hover {
-  background-color: #500c2c;
+  background-color: $pw-pink-dark;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba($pw-pink, 0.35);
 }
 
 .button-link:visited {
-  color: white;
+  color: #fff;
 }
 
 .carousel {
@@ -115,12 +143,12 @@ h1 {
   max-width: 960px;
   margin: 2em auto;
   overflow: hidden;
-  border-radius: 12px;
+  background: $pw-dark-2;
 }
 
 .carousel-images {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .carousel-images img {
@@ -137,17 +165,28 @@ h1 {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
-  border: none;
-  color: white;
-  font-size: 2em;
-  padding: 0.2em 0.6em;
+  background: rgba($pw-black, 0.7);
+  border: 1px solid rgba($pw-pink, 0.3);
+  color: #fff;
+  font-size: 1.5em;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   cursor: pointer;
   z-index: 2;
+  transition: $global-transition;
 }
 
-.carousel-button.prev { left: 10px; }
-.carousel-button.next { right: 10px; }
+.carousel-button:hover {
+  background: $pw-pink;
+  border-color: $pw-pink;
+}
+
+.carousel-button.prev { left: 12px; }
+.carousel-button.next { right: 12px; }
 
 .aspect-ratio-container {
   position: relative;
@@ -166,17 +205,295 @@ h1 {
 }
 
 .blog-card {
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 12px;
+  background-color: $pw-dark-2;
+  border: none;
+  border-top: 2px solid $pw-pink;
   padding: 1.5rem;
   margin: 2rem 0;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: background-color 0.25s;
+}
+.blog-card:hover {
+  background-color: #222222;
 }
 .blog-card h3 {
   margin-top: 0;
-  color: #fff;
+  color: $text-color;
 }
 .blog-card p {
-  color: #ccc;
+  color: $pw-grey-light;
+}
+
+/* ==========================================================================
+   PhantomWire theme overrides
+   Applies the dark / hot-pink / condensed-uppercase aesthetic of
+   phantomwiregames.github.io to the Minimal Mistakes theme structure.
+   ========================================================================== */
+
+::selection {
+  background: rgba($pw-pink, 0.35);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: $pw-dark;
+}
+::-webkit-scrollbar-thumb {
+  background: $pw-pink;
+}
+
+/* headings — condensed, uppercase, tight tracking */
+h1, h2, h3, h4, h5, h6 {
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.page__content h2 {
+  border-bottom-color: rgba($pw-pink, 0.15);
+}
+
+/* masthead / nav */
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba($pw-black, 0.85);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba($pw-pink, 0.12);
+}
+
+/* let the nav span the full bar instead of sitting in a centered,
+   max-width column — site title pinned left, links pinned right */
+.masthead__inner-wrap {
+  max-width: 100%;
+  padding-inline: 48px;
+}
+
+@media (max-width: 600px) {
+  .masthead__inner-wrap {
+    padding-inline: 24px;
+  }
+}
+
+.site-title {
+  font-family: $header-font-family;
+  font-weight: 900;
+  font-size: 1.3em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  &::after {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-inline-start: 10px;
+    border-radius: 50%;
+    background: $pw-pink;
+    box-shadow: 0 0 8px $pw-pink;
+    vertical-align: middle;
+    animation: pw-pulse 2s ease-in-out infinite;
+  }
+}
+
+/* mobile burger nav — a fixed-breakpoint burger + full-screen overlay,
+   replacing the theme's width-measuring priority-plus dropdown so the
+   collapse point is predictable, like phantomwiregames.github.io */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 4px;
+  margin-inline-start: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 101;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: $text-color;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.25s ease,
+                background 0.2s;
+    transform-origin: center;
+  }
+
+  &.open span {
+    background: $pw-pink;
+
+    &:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    &:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    &:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  }
+}
+
+.mobile-nav {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: $pw-black;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    position: relative;
+    font-family: $header-font-family;
+    font-weight: 700;
+    font-size: 36px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $text-color;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: $pw-pink;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    &:hover {
+      color: $pw-pink;
+
+      &::after { width: 100%; }
+    }
+  }
+}
+
+body.nav-open {
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  // higher-specificity selector needed to beat the theme's own
+  // ".greedy-nav .visible-links { display: flex; }" rule
+  .greedy-nav .visible-links {
+    display: none;
+  }
+
+  .nav-burger {
+    display: flex;
+  }
+}
+
+@keyframes pw-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.greedy-nav {
+  background: transparent;
+
+  a {
+    font-family: $header-font-family;
+    font-weight: 600;
+    font-size: 1.05em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+/* buttons */
+.btn {
+  font-family: $header-font-family;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.btn--primary {
+  &:hover {
+    box-shadow: 0 12px 32px rgba($pw-pink, 0.35);
+    transform: translateY(-2px);
+  }
+}
+
+/* hero buttons on the homepage */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: $text-color;
+  border: 1px solid rgba($text-color, 0.25);
+  padding: 0.9em 1.8em;
+  margin: 0.4em;
+  font-family: $header-font-family;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: $global-transition;
+
+  &:hover {
+    border-color: $pw-pink;
+    color: $pw-pink;
+    transform: translateY(-2px);
+  }
+
+  &:first-of-type {
+    background: $pw-pink;
+    border-color: $pw-pink;
+    color: #fff;
+
+    &:hover {
+      background: $pw-pink-dark;
+      color: #fff;
+      box-shadow: 0 12px 32px rgba($pw-pink, 0.35);
+    }
+  }
+}
+
+/* footer */
+.page__footer {
+  border-top: 1px solid rgba($pw-pink, 0.12);
+}
+
+.page__footer-follow li {
+  font-family: $monospace;
+  letter-spacing: 0.1em;
+}
+
+/* code blocks lean into the mono display font */
+.page__content pre,
+.page__content code {
+  letter-spacing: 0.02em;
 }

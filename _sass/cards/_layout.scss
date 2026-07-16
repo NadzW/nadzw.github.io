@@ -14,12 +14,15 @@
   padding: 1rem;
 }
 
+.card a {
+  text-decoration: none;
+}
+
 .card {
-  background: #1a1a1a;
-  border-radius: 8px;
+  background: $pw-dark-2;
   overflow: hidden;
-  box-shadow: 0 0 0 1px #333;
-  transition: transform 0.2s ease;
+  border-top: 2px solid $pw-pink;
+  transition: $global-transition;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -28,31 +31,45 @@
   max-width: 350px;
   margin: 0 auto;
 
-}
-
-.card:hover {
-  transform: scale(1.02);
+  &:hover {
+    background: #222222;
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  }
 }
 
 .card img {
   width: 100%;
-  height: auto;
+  height: 200px;
+  object-fit: cover;
   display: block;
+  filter: brightness(0.85) saturate(0.9);
+  transition: filter 0.4s;
+}
+
+.card:hover img {
+  filter: brightness(1) saturate(1.1);
 }
 
 .card-content {
-  padding: 1rem;
+  padding: 1.25rem;
 }
 
 .card h2 {
-  font-size: 1.2rem;
+  font-family: $header-font-family;
+  font-weight: 900;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
   margin: 0 0 0.5rem 0;
 }
 
 .card p {
   margin: 0;
+  font-family: $global-font-family;
+  font-weight: 300;
   font-size: 0.95rem;
-  color: #ccc;
+  line-height: 1.6;
+  color: $pw-grey-light;
   text-decoration: none;
 }
 
@@ -97,34 +114,6 @@ img {
 }
 .post-meta {
   color: $grey-color;
-}
-
-.card {
-  margin-bottom: 2em;
-  border: none;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
-  &:hover,
-  &:focus,
-  &:active {
-    box-shadow: 0px 1px 0px #ccc, 0px 2px 0px #c9c9c9, 0px 3px 0px #bbb,
-      0px 4px 0px #b9b9b9, 0px 6px 0px rgba(0, 0, 0, 0.1),
-      0px 1px 0px rgba(0, 0, 0, 0.3), 0px 3px 0px rgba(0, 0, 0, 0.2),
-      0px 5px 0px rgba(0, 0, 0, 0.25), 0 7px 7px rgba(0, 0, 0, 0.1),
-      0 8px 7px rgba(0, 0, 0, 0.1), 0 9px 9px rgba(0, 0, 0, 0.1),
-      0 10px 10px rgba(0, 0, 0, 0.15), 0 15px 15px rgba(0, 0, 0, 0.16);
-  }
-
-  .image {
-    img {
-      height: 220px;
-      object-fit: cover;
-      object-position: center;
-      @media screen and (max-width: $on-palm) {
-        width: 100%;
-      }
-    }
-  }
 }
 
 footer {
@@ -194,9 +183,9 @@ article.post {
   justify-content: center;
   align-items: center;
   padding: 3rem 1rem;
-  background-color: #111;
-  color: white;
-  border-bottom: 2px solid #333;
+  background-color: $pw-dark;
+  color: $text-color;
+  border-bottom: 1px solid rgba($pw-pink, 0.15);
 }
 
 .highlighted-content {
@@ -209,8 +198,7 @@ article.post {
 
 .highlighted-image img {
   max-width: 400px;
-  border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  filter: brightness(0.9) saturate(1.05);
 }
 
 .highlighted-text {
@@ -218,26 +206,46 @@ article.post {
   min-width: 250px;
 }
 
+.highlighted-text h2 {
+  font-family: $monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: $pw-pink;
+  margin-bottom: 0.75rem;
+}
+
 .highlighted-text h1 {
   margin-bottom: 0.5rem;
-  font-size: 2rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.95;
 }
 
 .highlighted-text p {
   margin-bottom: 1rem;
+  color: $pw-grey-light;
+  font-weight: 300;
 }
 
 .highlighted-button, .highlighted-button:visited {
-  display: inline-block;
-  background: #e21d7c;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: $pw-pink;
+  color: #fff;
+  padding: 0.9em 1.8em;
+  font-family: $header-font-family;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   text-decoration: none;
-  font-weight: bold;
-  transition: background 0.2s ease;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: $global-transition;
 }
 
 .highlighted-button:hover {
-  background: #751040;
+  background: $pw-pink-dark;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba($pw-pink, 0.35);
 }

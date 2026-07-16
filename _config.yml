@@ -1,6 +1,6 @@
 theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "neon" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "phantomwire" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "phantomwire", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"

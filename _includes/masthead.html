@@ -28,12 +28,57 @@
           <i class="fas fa-search"></i>
         </button>
         {% endif %}
-        <button class="greedy-nav__toggle hidden" type="button">
-          <span class="visually-hidden">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle menu" }}</span>
-          <div class="navicon"></div>
+        <button class="nav-burger" id="nav-burger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
-        <ul class="hidden-links hidden"></ul>
       </nav>
     </div>
   </div>
 </div>
+
+<div class="mobile-nav" id="mobile-nav">
+  <ul>
+    {%- for link in site.data.navigation.main -%}
+      <li>
+        <a
+          href="{{ link.url | relative_url }}"
+          {% if link.description %} title="{{ link.description }}"{% endif %}
+          {% if link.target %} target="{{ link.target }}"{% endif %}
+        >{{ link.title }}</a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+<script>
+(function () {
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('mobile-nav');
+  if (!burger || !menu) return;
+
+  function closeMenu() {
+    burger.classList.remove('open');
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  }
+
+  burger.addEventListener('click', function () {
+    var isOpen = !burger.classList.contains('open');
+    burger.classList.toggle('open', isOpen);
+    menu.classList.toggle('open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
+  });
+
+  Array.prototype.forEach.call(menu.querySelectorAll('a'), function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>

@@ -23,28 +23,9 @@ layout: default
 
 {{ content }}
 
-{% if page.game_design_cards  %}
-<div class="page__content">
-  <h1>Game / Technical Design Projects</h1>
-  <div class="cards-container">
-    {% for card in page.game_design_cards %}
-    <div class="card">
-      <a href="{{ card.url }}">
-        <img src="{{ card.image }}" alt="{{ card.title }}">
-        <div class="card-content">
-          <h2>{{ card.title }}</h2>
-          <p>{{ card.description }}</p>
-        </div>
-      </a>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-<hr>
-{% endif %}
 {% if page.uiux_design_cards %}
 <div class="page__content">
-    <h1>UI / UX Design Projects</h1>
+    <h1>UI / UX Projects</h1>
     <div class="cards-container">
         {% for card in page.uiux_design_cards  %}
         <div class="card">
@@ -58,6 +39,25 @@ layout: default
         </div>
         {% endfor %}
     </div>
+</div>
+<hr>
+{% endif %}
+{% if page.game_design_cards  %}
+<div class="page__content">
+  <h1>Other Projects</h1>
+  <div class="cards-container">
+    {% for card in page.game_design_cards %}
+    <div class="card">
+      <a href="{{ card.url }}">
+        <img src="{{ card.image }}" alt="{{ card.title }}">
+        <div class="card-content">
+          <h2>{{ card.title }}</h2>
+          <p>{{ card.description }}</p>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 {% endif %}
 <hr>

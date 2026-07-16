@@ -1,0 +1,84 @@
+/* ==========================================================================
+   PhantomWire skin
+   Dark, underground aesthetic — hot pink accent on near-black.
+   Inspired by phantomwiregames.github.io
+   ========================================================================== */
+
+/* Colors */
+$pw-pink: #e11678 !default;
+$pw-pink-dark: #b30f5f !default;
+$pw-black: #080808 !default;
+$pw-dark: #111111 !default;
+$pw-dark-2: #1a1a1a !default;
+$pw-grey-light: #888888 !default;
+
+$background-color: $pw-black !default;
+$text-color: #f5f5f5 !default;
+$primary-color: $pw-pink !default;
+$border-color: rgba($pw-pink, 0.15) !default;
+$code-background-color: $pw-dark !default;
+$code-background-color-dark: $pw-dark-2 !default;
+$form-background-color: $pw-dark-2 !default;
+$footer-background-color: $pw-black !default;
+$link-color: $pw-pink !default;
+$link-color-hover: mix(#fff, $pw-pink, 20%) !default;
+$link-color-visited: mix(#000, $pw-pink, 20%) !default;
+$masthead-link-color: rgba(245, 245, 245, 0.7) !default;
+$masthead-link-color-hover: #fff !default;
+$navicon-link-color-hover: $pw-dark-2 !default;
+
+/* muted / gray tones sit on near-black now */
+$gray: $pw-grey-light !default;
+$dark-gray: #cccccc !default;
+$darker-gray: #eeeeee !default;
+$light-gray: #333333 !default;
+$lighter-gray: #222222 !default;
+
+/* notices */
+$notice-background-mix: 90% !default;
+$code-notice-background-mix: 95% !default;
+
+/* syntax highlighting (base16) tuned for dark background */
+$base00: #f5f5f5 !default;
+$base01: #dddddd !default;
+$base02: #bbbbbb !default;
+$base03: #999999 !default;
+$base04: #111111 !default;
+$base05: #161616 !default;
+$base06: #1a1a1a !default;
+$base07: #222222 !default;
+$base08: $pw-pink !default;
+$base09: #fd8900 !default;
+$base0a: #ffcb6b !default;
+$base0b: #00c918 !default;
+$base0c: #1faaaa !default;
+$base0d: #3777e6 !default;
+$base0e: #ad00a1 !default;
+$base0f: #cc6633 !default;
+
+.author__urls.social-icons i,
+.author__urls.social-icons .svg-inline--fa,
+.page__footer-follow .social-icons i,
+.page__footer-follow .social-icons .svg-inline--fa {
+  color: inherit;
+}
+
+/* next/previous buttons */
+.pagination--pager {
+  color: $text-color;
+  background-color: $primary-color;
+  border-color: transparent;
+
+  &:visited {
+    color: $text-color;
+  }
+
+  &:hover {
+    background-color: $pw-pink-dark;
+  }
+}
+
+.ais-search-box .ais-search-box--input {
+  background-color: $form-background-color;
+  color: $text-color;
+}
