@@ -11,6 +11,18 @@ var store = [{
         "url": "/blog/vanillahudplus/",
         "teaser": null
       },{
+        "title": "Nightshift: From Getaway Driver to Elimination Circuit",
+        "excerpt":"Nightshift is a roguelite street racing tournament I’m building solo under my studio, PhantomWire Games. You start dead last, ranked #1000 out of 1000 in an underground elimination circuit. The routes are procedurally assembled every run, a perk draft between races lets you build your run identity, and every 100...","categories": ["devlog"],
+        "tags": ["nightshift","phantomwire","unreal-engine","roguelite"],
+        "url": "/blog/nightshift-devlog/",
+        "teaser": null
+      },{
+        "title": "Building the Mover Cover System",
+        "excerpt":"Cover mechanics are one of those systems that look deceptively simple from the outside. Press a button, character hugs a wall, duck behind it. But building one that works robustly across rotated geometry, network prediction, concave corners, and Mover’s experimental movement architecture turned out to be one of the deeper...","categories": ["devlog"],
+        "tags": ["mover-cover-system","phantomwire","unreal-engine","gameplay-programming"],
+        "url": "/blog/mover-cover-system/",
+        "teaser": null
+      },{
         "title": "Punch-Em-Up",
         "excerpt":" ","categories": [],
         "tags": [],

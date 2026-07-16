@@ -1,4 +1,237 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://nadzw.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://nadzw.github.io/" rel="alternate" type="text/html" /><updated>2026-07-16T15:14:21+00:00</updated><id>https://nadzw.github.io/feed.xml</id><title type="html">Nadeem Wali</title><subtitle>A game design graduate specializing in technical design and technical art, with a strong focus on Unreal Engine. I enjoy bridging the gap between art and programming, creating efficient systems that enhance gameplay and visuals.</subtitle><author><name>Nadeem Wali</name><email>Nadeem.wali.2001@gmail.com</email></author><entry><title type="html">How a mod I created for PAYDAY 3 made it into the base game</title><link href="https://nadzw.github.io/blog/vanillahudplus/" rel="alternate" type="text/html" title="How a mod I created for PAYDAY 3 made it into the base game" /><published>2025-06-25T00:00:00+00:00</published><updated>2025-06-25T00:00:00+00:00</updated><id>https://nadzw.github.io/blog/VanillaHUDPlus</id><content type="html" xml:base="https://nadzw.github.io/blog/vanillahudplus/"><![CDATA[<p>When I first began working on VanillaHUD+, the goal was simple: improve Payday 3’s team HUD while staying true to its 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://nadzw.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://nadzw.github.io/" rel="alternate" type="text/html" /><updated>2026-07-16T20:10:25+00:00</updated><id>https://nadzw.github.io/feed.xml</id><title type="html">Nadeem Wali</title><subtitle>A game design graduate specializing in technical design and technical art, with a strong focus on Unreal Engine. I enjoy bridging the gap between art and programming, creating efficient systems that enhance gameplay and visuals.</subtitle><author><name>Nadeem Wali</name><email>Nadeem.wali.2001@gmail.com</email></author><entry><title type="html">Building the Mover Cover System</title><link href="https://nadzw.github.io/blog/mover-cover-system/" rel="alternate" type="text/html" title="Building the Mover Cover System" /><published>2026-07-16T00:00:00+00:00</published><updated>2026-07-16T00:00:00+00:00</updated><id>https://nadzw.github.io/blog/mover-cover-system</id><content type="html" xml:base="https://nadzw.github.io/blog/mover-cover-system/"><![CDATA[<p>Cover mechanics are one of those systems that look deceptively simple from the outside. Press a button, character hugs a wall, duck behind it. But building one that works robustly across rotated geometry, network prediction, concave corners, and Mover’s experimental movement architecture turned out to be one of the deeper technical problems I’ve worked on.</p>
+
+<p>This is a writeup on how I built the <strong>Mover Cover System</strong> - a C++ plugin that adds a full cover gameplay system to any Mover-based character with a single actor component.</p>
+
+<hr />
+
+<h2 id="why-mover">Why Mover?</h2>
+
+<p>Epic’s Mover plugin is a ground-up rewrite of the character movement system, designed to be modular, network-prediction-aware, and simulation-driven. It’s still marked experimental, but it’s clearly the direction UE5 is heading, and building on it early means everything the plugin does is designed for the future of Unreal movement - not bolted onto legacy <code class="language-plaintext highlighter-rouge">UCharacterMovementComponent</code> assumptions.</p>
+
+<p>The tradeoff is that Mover has almost no third-party ecosystem yet. If you want a cover system, you build it yourself.</p>
+
+<hr />
+
+<h2 id="architecture">Architecture</h2>
+
+<p>The plugin has three layers:</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">UMoverCoverComponent</code></strong> - an actor component you drop onto your character. It owns all the cover detection traces, wall tracking, edge/corner detection, and gap scanning. It also manages the input widget prompts and the <code class="language-plaintext highlighter-rouge">FCoverModeInputs</code> struct that feeds the simulation.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">UCoverWalkingMode</code></strong> - a Mover movement mode registered on the <code class="language-plaintext highlighter-rouge">CharacterMoverComponent</code>. It derives from <code class="language-plaintext highlighter-rouge">UWalkingMode</code> so floor detection, gravity, and collision all work normally. The only override is <code class="language-plaintext highlighter-rouge">GenerateMove_Implementation</code>, which replaces the player’s directional input with cover-locked lateral movement, wall depth correction, edge peeking, and corner transition driving.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">FCoverModeInputs</code></strong> - a custom Mover input struct that carries all cover state through the simulation. Wall normals, locations, corner data, gap data, flags for every state. This struct is <code class="language-plaintext highlighter-rouge">NetSerialize</code>d so both client and server read the same data and make the same movement decisions at the same simulation tick.</p>
+
+<p>Mode transitions (<code class="language-plaintext highlighter-rouge">UCoverEntryTransition</code>, <code class="language-plaintext highlighter-rouge">UCoverExitTransition</code>) are wired onto the Walking and Cover modes respectively. Rather than calling <code class="language-plaintext highlighter-rouge">QueueNextMode</code> directly from game-thread code, the transitions read <code class="language-plaintext highlighter-rouge">bShouldBeInCoverMode</code> from <code class="language-plaintext highlighter-rouge">FCoverModeInputs</code> each simulation tick and fire when the flag changes. This means mode switching happens inside Mover’s prediction system - not outside it - which is the difference between multiplayer that works and multiplayer that desynchs.</p>
+
+<hr />
+
+<h2 id="wall-detection-and-classification">Wall Detection and Classification</h2>
+
+<p>Entering cover fires a sphere sweep from the character’s forward vector. On hit, it runs a secondary horizontal trace at head height toward the wall to classify the surface:</p>
+
+<ul>
+  <li><strong>Full cover</strong> - wall blocks the head-height trace. Character stands.</li>
+  <li><strong>Half cover</strong> - wall doesn’t reach head height. Character crouches.</li>
+</ul>
+
+<p>This classification reruns every tick during <code class="language-plaintext highlighter-rouge">UpdateCoverWall</code> so it updates dynamically as the character shimmies along surfaces of varying height - useful for walls that transition from full to half mid-length.</p>
+
+<p><img src="/assets/images/blogs/mcs/HalfCoverDebug.jpg" alt="Half cover crouch pose behind a 1m wall, with GenerateMove debug output showing wall and corner state" /></p>
+
+<p>A wall depth tracking sweep fires each tick to keep the character snapped to the surface. Wall normals and tangents are recomputed each tick so shimmying across rotated or diagonal geometry stays stable.</p>
+
+<p><img src="/assets/images/blogs/mcs/ShimmyDebug.jpg" alt="Character shimmying along a wall, debug lines showing wall normal and lateral movement target" /></p>
+
+<p><img src="/assets/images/blogs/mcs/FullCoverDebug.jpg" alt="Standing full cover pose against a 2.5m wall, with wall normal and target debug lines" /></p>
+
+<hr />
+
+<h2 id="the-quaternion-bug">The Quaternion Bug</h2>
+
+<p>Early on, the character would spin erratically when against walls rotated on the yaw - a 40-degree wall, for example. The debug output showed a normal like <code class="language-plaintext highlighter-rouge">(-0.64, -0.77, 0)</code> and the angular velocity flipping sign every other frame.</p>
+
+<p>The cause: <code class="language-plaintext highlighter-rouge">ToRotationVector()</code> on a quaternion is unstable near the 180-degree singularity. When the desired facing is just over 180 degrees from the current facing, the rotation vector flips direction frame to frame, producing the spin.</p>
+
+<p>The fix is one line:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">ToFacing</span><span class="p">.</span><span class="n">W</span> <span class="o">&lt;</span> <span class="mf">0.0f</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ToFacing</span> <span class="o">=</span> <span class="n">FQuat</span><span class="p">(</span><span class="o">-</span><span class="n">ToFacing</span><span class="p">.</span><span class="n">X</span><span class="p">,</span> <span class="o">-</span><span class="n">ToFacing</span><span class="p">.</span><span class="n">Y</span><span class="p">,</span> <span class="o">-</span><span class="n">ToFacing</span><span class="p">.</span><span class="n">Z</span><span class="p">,</span> <span class="o">-</span><span class="n">ToFacing</span><span class="p">.</span><span class="n">W</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Negating all four components gives the mathematically identical rotation via the shorter arc. <code class="language-plaintext highlighter-rouge">q</code> and <code class="language-plaintext highlighter-rouge">-q</code> represent the same orientation - this just ensures we always take the path under 180 degrees.</p>
+
+<hr />
+
+<h2 id="corners-and-gaps">Corners and Gaps</h2>
+
+<p><strong>Outside corners</strong> are detected with an L-shaped probe: a lookahead trace in the shimmy direction, then from the end of that trace, a second trace in the reverse direction looking for a connecting wall. If that second trace hits, and if a floor check at the corner point finds ground to land on, <code class="language-plaintext highlighter-rouge">bIsAtCorner</code> is set and the corner prompt widget appears.</p>
+
+<p><img src="/assets/images/blogs/mcs/CornerPeekPrompt.jpg" alt="Character peeking around an outside corner with the corner transition prompt visible" /></p>
+
+<p>When the player presses the corner input, <code class="language-plaintext highlighter-rouge">bWantsToGoAroundCorner</code> is set in the input struct. The movement mode reads this flag and drives the character toward the corner point at <code class="language-plaintext highlighter-rouge">CornerTransitionSpeed</code> - bypassing the normal acceleration limiter so it’s instant rather than easing up over a second.</p>
+
+<p><strong>Gap movement</strong> was a later addition. At wall edges with no wall ahead, stepped perpendicular traces scan outward in <code class="language-plaintext highlighter-rouge">GapStepSize</code> increments looking for a coverable wall across open space. The first valid hit (with floor beneath it) becomes the gap target. Short gaps use a spin (character sidesteps), long gaps trigger a sprint (character runs face-first, rotating to face the travel direction mid-transit). Both are handled entirely within <code class="language-plaintext highlighter-rouge">UCoverWalkingMode</code> - no mode changes, no transitions.</p>
+
+<hr />
+
+<h2 id="networking">Networking</h2>
+
+<p>Mover uses rollback-style network prediction. The client produces inputs, runs simulation locally, and sends inputs to the server. The server runs the same simulation with the same inputs. If the server and client disagree, the client gets corrected.</p>
+
+<p>For cover to work in multiplayer, the server needs to make the same movement mode decisions as the client. That means the cover flags - especially <code class="language-plaintext highlighter-rouge">bShouldBeInCoverMode</code> - must travel through the replicated input collection, not just exist on the game thread.</p>
+
+<p>The transitions handle this. Every simulation tick, <code class="language-plaintext highlighter-rouge">UCoverEntryTransition::Evaluate_Implementation</code> reads <code class="language-plaintext highlighter-rouge">bShouldBeInCoverMode</code> from <code class="language-plaintext highlighter-rouge">FCoverModeInputs</code>. If it’s true and the current mode is Walking, it returns the Cover mode name. Client and server both run this evaluation independently with the same input data, so they transition at the same tick.</p>
+
+<p>Server-side validation in the transition independently traces to verify the claimed <code class="language-plaintext highlighter-rouge">WallHitLocation</code> has an actual wall there, and checks that the character isn’t suspiciously far from it. Requests that fail validation are rejected, leaving the client in Walking mode until a legitimate wall is found.</p>
+
+<p>One networking issue worth noting: <code class="language-plaintext highlighter-rouge">FCoverModeInputs</code> has a lot of fields. 12 FVectors, 11 booleans, several floats. At raw serialization that’s around 1500 bits per struct instance. Mover bundles multiple input frames per RPC, and the total was exceeding the 16384-bit <code class="language-plaintext highlighter-rouge">MaxNumBits</code> limit.</p>
+
+<p>The fix was to compress <code class="language-plaintext highlighter-rouge">NetSerialize</code> - booleans packed into a 32-bit flags field (11 bits), normals quantized to 16 bits per component, world locations truncated to integers. Compressed size is around 750 bits per instance, well within the limit.</p>
+
+<hr />
+
+<h2 id="editor-visualization">Editor Visualization</h2>
+
+<p>The editor module adds a <strong>Cover Debug</strong> toggle to the viewport toolbar’s View Modes dropdown. When enabled, a subsystem scans static mesh surfaces near the editor camera every 0.5 seconds and applies a translucent overlay material:</p>
+
+<ul>
+  <li>Green - full cover</li>
+  <li>Yellow - half cover</li>
+  <li>Red - too low</li>
+</ul>
+
+<p>It works with Nanite since it applies via material override on the mesh component rather than drawing geometry. Original materials are restored when the toggle is off.</p>
+
+<hr />
+
+<h2 id="whats-in-the-plugin">What’s in the Plugin</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">UMoverCoverComponent</code> - cover detection, wall tracking, corner/gap probing, widget management, event delegates</li>
+  <li><code class="language-plaintext highlighter-rouge">UCoverWalkingMode</code> - cover movement mode with shimmy, depth correction, edge peeking, corner and gap driving</li>
+  <li><code class="language-plaintext highlighter-rouge">UCoverEntryTransition</code> / <code class="language-plaintext highlighter-rouge">UCoverExitTransition</code> - network-safe mode transitions with server-side validation</li>
+  <li><code class="language-plaintext highlighter-rouge">FCoverModeInputs</code> - replicated input struct with compressed NetSerialize</li>
+  <li><code class="language-plaintext highlighter-rouge">UCoverDebugSubsystem</code> - editor cover surface visualizer</li>
+  <li><code class="language-plaintext highlighter-rouge">IA_Cover</code>, <code class="language-plaintext highlighter-rouge">IA_CoverCorner</code>, <code class="language-plaintext highlighter-rouge">IMC_Cover</code> - preconfigured Enhanced Input actions and mapping context</li>
+  <li>Full Doxygen documentation with setup guide and screenshots</li>
+</ul>
+
+<p>The plugin is compatible with any Mover-based character with no base class requirements. Tested on UE 5.8, packaged for 5.5 through 5.8.</p>
+
+<hr />
+
+<p>Available on FAB: <a href="https://fab.com">Mover Cover System</a></p>
+
+<p>Support: <a href="mailto:phantomwiregames@gmail.com">phantomwiregames@gmail.com</a> · <a href="https://discord.com/invite/szPYYvDnxp">Discord</a> · <a href="https://x.com/I_AmShalashaska">Twitter</a></p>]]></content><author><name>Nadeem Wali</name><email>Nadeem.wali.2001@gmail.com</email></author><category term="devlog" /><category term="mover-cover-system" /><category term="phantomwire" /><category term="unreal-engine" /><category term="gameplay-programming" /><summary type="html"><![CDATA[How I built a network-predicted cover system on Unreal Engine's experimental Mover plugin - wall classification, corners, gaps, a quaternion bug, and NetSerialize compression.]]></summary></entry><entry><title type="html">Nightshift: From Getaway Driver to Elimination Circuit</title><link href="https://nadzw.github.io/blog/nightshift-devlog/" rel="alternate" type="text/html" title="Nightshift: From Getaway Driver to Elimination Circuit" /><published>2026-06-01T00:00:00+00:00</published><updated>2026-06-01T00:00:00+00:00</updated><id>https://nadzw.github.io/blog/nightshift-devlog</id><content type="html" xml:base="https://nadzw.github.io/blog/nightshift-devlog/"><![CDATA[<p>Nightshift is a roguelite street racing tournament I’m building solo under my studio, PhantomWire Games. You start
+dead last, ranked #1000 out of 1000 in an underground elimination circuit. The routes are procedurally assembled
+every run, a perk draft between races lets you build your run identity, and every 100 ranks a named rival stands
+between you and the next tier. Think Hades meets Need for Speed Underground.</p>
+
+<p>This is a breakdown of how it got here - from a scrapped prototype to a fully playable loop.</p>
+
+<h3 id="from-getaway-driver-to-elimination-circuit">From Getaway Driver to Elimination Circuit</h3>
+
+<p>The project didn’t start here. It began in September 2024 as a Crazy Taxi-style getaway driver game - spawn into a
+procedural city at night, ferry criminals past police patrols before sunrise. That’s also where the name Nightshift
+came from. Early development was spent getting UE5’s Chaos Vehicle physics to actually <em>feel</em> right (suspension
+travel, tyre friction, centre of mass - it all has knock-on effects), while the open-world concept was prototyped
+alongside it.</p>
+
+<p>By October 2025, it was clear the open-world getaway loop wasn’t tight enough - too much time navigating, not
+enough time doing anything interesting. The pivot stripped the game back to the part that was actually fun in
+playtesting: the racing itself. Roguelite structure went in on top - elimination tournament, perk drafts, procedural
+route assembly. The name stayed. The game became something far more defined.</p>
+
+<h3 id="vehicles-rendering--art-direction">Vehicles, Rendering &amp; Art Direction</h3>
+
+<p>The visual identity draws from NFS Underground, Tokyo Xtreme Racer and Initial D. After testing several
+post-process approaches, I landed on a cel-shaded look built around the <strong>reverse hull technique</strong> - the same
+outline method Guilty Gear Strive uses - rendering an inflated, backface-only inverted mesh in black to get bold
+cartoon outlines with no post-process edge detection. Shadow regions use a halftone pattern for a printed,
+comic-panel feel.</p>
+
+<p><img src="/assets/images/ns-preview02.webp" alt="Nightshift cel-shaded vehicle in a garage, reverse-hull outlines and halftone shadow" /></p>
+
+<p>Getting custom vehicles into a Chaos Vehicle project needs a specific bone hierarchy for wheels, axles and dampers,
+which is slow and error-prone to rig by hand. I built a <strong>Blender plugin</strong> that generates the full skeleton
+automatically from wheel placement alone, producing an FBX-ready rig every time. Vehicle paint runs entirely through
+a master material driven by a second UV channel mapped to flat colour regions on the body - no per-colour textures,
+full customisation (base colour, metallic finish, tint, decals) through material parameters alone. That system
+started life as a standalone <a href="/portfolio/vehicle-customisation/">university project</a> and is being folded into
+Nightshift directly.</p>
+
+<h3 id="race-framework--ai">Race Framework &amp; AI</h3>
+
+<p>The race loop runs on two <code class="language-plaintext highlighter-rouge">UWorldSubsystem</code>s. <code class="language-plaintext highlighter-rouge">URaceEventManager</code> owns a six-phase state machine -
+<code class="language-plaintext highlighter-rouge">Inactive → PreRace → Countdown → Racing → Finish → Results</code> - broadcasting a delegate on every transition so any
+system can subscribe without coupling to the manager itself. Race position is resolved at 20hz using checkpoint
+count as the primary sort key and spline distance as the tiebreaker. <code class="language-plaintext highlighter-rouge">URaceCheckpointManager</code> handles wrong-way
+detection (velocity dot product against the checkpoint’s forward vector, debounced to avoid false positives when
+clipping a checkpoint at an angle) and keeps only the next two checkpoints visible at a time.</p>
+
+<p>Racer AI follows a spline-following foundation with two layers on top: a lightweight <strong>vehicle avoidance</strong> pass
+that nudges racers around each other without full path replanning, and a <strong>utility-scored pickup system</strong> that
+evaluates race position, nearby threats, vehicle health and upcoming corner curvature every 1-2 seconds per racer
+to decide when to use an item - staggered so the whole field doesn’t pop an EMP in the same instant.</p>
+
+<h3 id="ui-hud--the-perk-draft-loop">UI, HUD &amp; the Perk Draft Loop</h3>
+
+<p>Perks run through the Gameplay Ability System as multipliers against a vehicle attribute set - speed, handling,
+acceleration, drift angle - so the system stays composable instead of a pile of one-off value overrides. On the
+design/UI side, I rebuilt the entire UI framework from the ground up so every menu and in-game widget shares a
+common base for focus management and input handling, which fixed a run of edge-case bugs (including one where the
+back-action prompt silently disappeared in certain menus).</p>
+
+<p><img src="/assets/images/ns-preview04.webp" alt="Nightshift perk draft screen showing three perk cards after a race" /></p>
+
+<p>The perk draft screen presents three cards after each race - name, rarity, icon and level, with the full
+description flipping open on hover. Crossing the finish line first shows your placement as big graffiti-style spray
+text rather than a plain number, before fading into a results table that correctly lists DNF racers instead of
+giving them a ghost time.</p>
+
+<p><img src="/assets/images/ns-preview05.webp" alt="Player finishing position revealed as graffiti-style spray text" />
+<img src="/assets/images/ns-preview06.webp" alt="Nightshift results screen listing every racer's finishing time, including a DNF entry" /></p>
+
+<p>Selected perks save to the save game, level up if already owned, and get reapplied automatically - stats and HUD
+icons included - the next time you’re in a race. A <code class="language-plaintext highlighter-rouge">SceneCaptureComponent2D</code> feeding a HUD render target also
+drives a working rear-view mirror.</p>
+
+<p><img src="/assets/images/ns-preview07.webp" alt="Active perk icons shown in the Nightshift HUD" /></p>
+
+<h3 id="scrapping-the-open-world">Scrapping the Open World</h3>
+
+<p>Before the current architecture, I built a full PCG pipeline for runtime open-world city generation - road network
+graphs, continuous race splines, the works. Once I properly stress-tested it in early 2026, the frame rate impact
+and level-streaming load times weren’t acceptable for a game that needs to feel fast and load a new run instantly.
+UE5’s Mass Traffic system was also evaluated for ambient vehicles and ruled out - too much integration overhead for
+what it was worth at this stage.</p>
+
+<p>The call: no open-world city. Nightshift uses linear, procedurally assembled race routes instead - hand-crafted
+segments stitched together at runtime, closer to how F-Zero or Trackmania build a track than an open world. It’s a
+much better fit for a roguelite where every run needs to feel snappy, and it’s the kind of scope decision that’s
+easy to avoid making until it’s already expensive - better to find out in a stress test than six months into
+building systems on top of it.</p>
+
+<h3 id="performance-engineering">Performance Engineering</h3>
+
+<p>Before building anything else on the rebuilt foundation, I put the project through a full optimisation pass.
+Disabling deferred rendering for DX11 forward shading (SM5) got a packaged build to 600-900fps at native 1440p on
+an RTX 3060 with a near-empty scene. Forward shading meant no Mega Lights support though, so I moved back to DX12
+with hardware ray tracing enabled - about 0.5ms more frame time, but Mega Lights removes a large chunk of manual
+lighting work in a dynamic city environment. That build still held 400-500fps at native 1440p on desktop, and
+around 300fps at native resolution on a Steam Deck.</p>
+
+<h3 id="where-its-at-now">Where It’s At Now</h3>
+
+<p>Nightshift currently has a fully playable end-to-end loop: <strong>Title Screen → Garage Hub → Race → Results → Perk
+Draft → Garage Hub</strong>. It’s rough around the edges with placeholder assets throughout, but everything from here
+builds on a working foundation instead of a set of isolated tech tests. Rank progression, elimination logic and
+tying the tournament structure together end-to-end are next.</p>
+
+<p><a href="https://phantomwiregames.github.io/pages/news/news.html">Read the full devlog series on PhantomWire</a></p>]]></content><author><name>Nadeem Wali</name><email>Nadeem.wali.2001@gmail.com</email></author><category term="devlog" /><category term="nightshift" /><category term="phantomwire" /><category term="unreal-engine" /><category term="roguelite" /><summary type="html"><![CDATA[How Nightshift went from a Crazy Taxi-style prototype to a roguelite street racing tournament - vehicles, rendering, race framework, AI, UI, and the scope pivot that shaped it.]]></summary></entry><entry><title type="html">How a mod I created for PAYDAY 3 made it into the base game</title><link href="https://nadzw.github.io/blog/vanillahudplus/" rel="alternate" type="text/html" title="How a mod I created for PAYDAY 3 made it into the base game" /><published>2025-06-25T00:00:00+00:00</published><updated>2025-06-25T00:00:00+00:00</updated><id>https://nadzw.github.io/blog/VanillaHUDPlus</id><content type="html" xml:base="https://nadzw.github.io/blog/vanillahudplus/"><![CDATA[<p>When I first began working on VanillaHUD+, the goal was simple: improve Payday 3’s team HUD while staying true to its 
 original visual language. The vanilla HUD at launch was clean but lacked clarity in certain areas. Information like crew 
 ammo, tools, placeables and overkill status was missing - making teamwork unnecessarily harder as people would be forced to 
 chat or use the chat wheel to ask for extra ammo.</p>
