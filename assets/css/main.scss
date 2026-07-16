@@ -70,7 +70,7 @@ $on-laptop: 800px;
 
 
 .project-page .container {
-  max-width: 800px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 2rem;
   color: $text-color;
@@ -276,6 +276,13 @@ h1, h2, h3, h4, h5, h6 {
   .masthead__inner-wrap {
     padding-inline: 24px;
   }
+}
+
+/* blog listing + single posts/pages (about, etc.) — widen the shared
+   content column like the other custom containers (cards grid, project
+   pages) instead of leaving it capped at the theme's default 1280px */
+#main {
+  max-width: 1820px;
 }
 
 .site-title {

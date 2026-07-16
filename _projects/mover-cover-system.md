@@ -35,4 +35,10 @@ summary: >
   documentation.</p>
 
   <p>More gameplay clips and screenshots are posted on <a href="https://x.com/I_AmShalashaska" target="_blank" rel="noopener">X / Twitter</a>.</p>
+
+  <div class="blog-card">
+    <h3>📘 Full Devlog</h3>
+    <p>Wall classification, corner and gap detection, a nasty quaternion bug, and compressing NetSerialize to fit Mover's bit budget.</p>
+    <a href="/blog/mover-cover-system/" class="button-link">Read the Devlog</a>
+  </div>
 ---
