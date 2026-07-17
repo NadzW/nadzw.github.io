@@ -49,6 +49,10 @@ game_design_cards:
     image: /assets/images/card-peu.png
     description: A 90s inspired side scroller made for Mini Jam 73.
 uiux_design_cards:
+  - title: Project Coldlight Interface Design
+    url: /portfolio/project-coldlight/
+    image: /assets/images/card-coldlight.png
+    description: An interactive interface design for stealth game, Project Coldlight.
   - title: HUDCore
     url: /portfolio/hudcore/
     image: /assets/images/card-hc.png
