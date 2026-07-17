@@ -84,31 +84,12 @@
   @keyframes contentIn { from { opacity: 0; transform: translateY(4px); } }
   @keyframes pulse { 50% { opacity: 0.3; } }
 
-  .crosshair { position: absolute; width: 9px; height: 9px; opacity: 0.5; }
-  .crosshair::before, .crosshair::after { content: ""; position: absolute; background: var(--line-dim); }
-  .crosshair::before { left: 4px; top: 0; width: 1px; height: 9px; }
-  .crosshair::after  { top: 4px; left: 0; height: 1px; width: 9px; }
-
   .microdata {
     font-size: 8.5px; letter-spacing: 0.16em;
     color: var(--line-dim);
     line-height: 1.7;
     white-space: nowrap;
   }
-
-  /* =========== AMBIENT (sky, upper area) =========== */
-  .ambient {
-    position: absolute; left: 55%; top: 3%;
-    width: 13%;
-    opacity: 0.4;
-    animation: ambientDrift 30s ease-in-out infinite alternate;
-  }
-  @keyframes ambientDrift { to { transform: translateY(-10px) rotate(2deg); } }
-  .ambient svg { width: 100%; overflow: visible; }
-  .ambient ellipse, .ambient circle { fill: none; stroke: var(--line-faint); stroke-width: 0.6; }
-  .sphere-spin { transform-origin: 150px 150px; animation: sphereSpin 40s linear infinite; }
-  @keyframes sphereSpin { to { transform: rotate(360deg); } }
-  .ambient text { fill: var(--line-dim); font-size: 9px; letter-spacing: 0.18em; }
 
   .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
   .particles i {
@@ -385,27 +366,6 @@
   <div class="stage">
     <div class="shot"></div>
     <div class="particles" id="particles" aria-hidden="true"></div>
-
-    <!-- ambient wireframe sphere in the sky -->
-    <div class="ambient" aria-hidden="true">
-      <svg viewBox="0 0 300 320">
-        <g class="sphere-spin">
-          <circle cx="150" cy="150" r="100"/>
-          <ellipse cx="150" cy="150" rx="100" ry="38"/>
-          <ellipse cx="150" cy="150" rx="100" ry="72"/>
-          <ellipse cx="150" cy="150" rx="38" ry="100"/>
-          <ellipse cx="150" cy="150" rx="72" ry="100"/>
-        </g>
-        <circle cx="150" cy="150" r="118" stroke-dasharray="1 9" fill="none"/>
-        <text x="150" y="300" text-anchor="middle">SAT UPLINK 04 · SYNC 98.2</text>
-      </svg>
-    </div>
-
-    <!-- scattered crosshair markers -->
-    <div class="crosshair" style="left: 16%; top: 34%;"></div>
-    <div class="crosshair" style="left: 80%; top: 24%;"></div>
-    <div class="crosshair" style="left: 70%; top: 66%;"></div>
-    <div class="crosshair" style="left: 38%; top: 16%;"></div>
 
     <!-- soft glow backdrop behind the objective (fades at edges) -->
     <div class="obj-glow"></div>
