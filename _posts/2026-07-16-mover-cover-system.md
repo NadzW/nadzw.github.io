@@ -135,6 +135,6 @@ The plugin is compatible with any Mover-based character with no base class requi
 
 ---
 
-Available on FAB: [Mover Cover System](https://fab.com)
+Available on FAB: [Mover Cover System](https://www.fab.com/listings/331cddd0-1505-4750-8321-f480416f3f55)
 
 Support: [phantomwiregames@gmail.com](mailto:phantomwiregames@gmail.com) · [Discord](https://discord.com/invite/szPYYvDnxp) · [Twitter](https://x.com/I_AmShalashaska)
