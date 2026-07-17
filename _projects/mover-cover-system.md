@@ -19,7 +19,7 @@ summary: >
   cover gameplay system to any Mover-based pawn through a single actor component - no custom character base class
   required.</p>
 
-  <a href="https://www.fab.com/portal/listings/0d59ddc9-6df8-4a97-b17c-5c58423d8a88" target="_blank" rel="noopener" class="button-link">View on Fab</a>
+  <a href="https://www.fab.com/listings/331cddd0-1505-4750-8321-f480416f3f55" target="_blank" rel="noopener" class="button-link">View on Fab</a>
 
   <p>The system handles wall detection and classification (full and half cover), shimmy movement, edge detection,
   peeking and aiming around wall edges, transitions around outside corners, and gap movement between disconnected
