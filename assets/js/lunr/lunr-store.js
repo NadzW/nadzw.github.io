@@ -94,4 +94,10 @@ var store = [{
         "tags": [],
         "url": "/portfolio/mover-cover-system/",
         "teaser": null
+      },{
+        "title": "Project Coldlight Interface Design",
+        "excerpt":" ","categories": [],
+        "tags": [],
+        "url": "/portfolio/project-coldlight/",
+        "teaser": null
       }]
