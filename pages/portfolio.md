@@ -4,8 +4,8 @@ layout: cards
 title: Portfolio
 highlighted_card:
   title: 
-  url: /portfolio/hudcore/
-  image: /assets/images/card-hc.png
+  url: /portfolio/project-coldlight/
+  image: /assets/images/card-coldlight.png
   description: 
 game_design_cards: 
   - title: Nightshift
