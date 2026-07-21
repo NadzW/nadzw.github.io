@@ -37,18 +37,26 @@ summary: >
   gameplay framing to validate legibility against a real scene.</p>
 
   <h2>Try It</h2>
-  <p>The prototype below is fully interactive - use the panel on the right (or keyboard shortcuts <b>1-5</b> for
-  individual elements, <b>O</b> for the objective display, and <b>Q</b> for the equipment wheel) to switch between
-  awareness states and toggle HUD elements on and off.</p>
+  <p>The prototypes below are fully interactive. The menu flow covers the full six-screen sequence - title,
+  options, mission select, intel briefing, loadout/ready-up, and mission debrief. The HUD panel on the right (or
+  keyboard shortcuts <b>1-5</b> for individual elements, <b>O</b> for the objective display, and <b>Q</b> for the
+  equipment wheel) switches between awareness states and toggles HUD elements on and off.</p>
+
+  <div style="position: relative; width: 100%; max-width: 960px; aspect-ratio: 16 / 9; margin: 1.5em auto; border: 1px solid rgba(255,255,255,0.15);">
+    <iframe id="coldlight-menu-frame" src="/projects/Coldlight/coldlight-menu-concept.html" title="COLDLIGHT interactive menu prototype" style="width: 100%; height: 100%; border: 0; display: block;" loading="lazy" allowfullscreen></iframe>
+    <button id="coldlight-menu-fullscreen-btn" onclick="coldlightToggleFullscreen('coldlight-menu-frame', 'coldlight-menu-fullscreen-btn')" style="position: absolute; top: 10px; right: 10px; z-index: 2; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #eef5f8; background: rgba(3,6,9,0.78); border: 1px solid rgba(230,238,242,0.38); padding: 6px 12px; cursor: pointer;">⛶ Fullscreen</button>
+  </div>
+
+  <p style="text-align: center; font-style: italic;">Interactive menu flow concept</p>
 
   <div style="position: relative; width: 100%; max-width: 960px; aspect-ratio: 16 / 9; margin: 1.5em auto; border: 1px solid rgba(255,255,255,0.15);">
     <iframe id="coldlight-hud-frame" src="/projects/Coldlight/coldlight-hud-ingame.html" title="COLDLIGHT interactive HUD prototype" style="width: 100%; height: 100%; border: 0; display: block;" loading="lazy" allowfullscreen></iframe>
-    <button id="coldlight-fullscreen-btn" onclick="coldlightToggleFullscreen()" style="position: absolute; top: 10px; right: 10px; z-index: 2; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #eef5f8; background: rgba(3,6,9,0.78); border: 1px solid rgba(230,238,242,0.38); padding: 6px 12px; cursor: pointer;">⛶ Fullscreen</button>
+    <button id="coldlight-hud-fullscreen-btn" onclick="coldlightToggleFullscreen('coldlight-hud-frame', 'coldlight-hud-fullscreen-btn')" style="position: absolute; top: 10px; right: 10px; z-index: 2; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #eef5f8; background: rgba(3,6,9,0.78); border: 1px solid rgba(230,238,242,0.38); padding: 6px 12px; cursor: pointer;">⛶ Fullscreen</button>
   </div>
 
   <script>
-    function coldlightToggleFullscreen() {
-      var frame = document.getElementById('coldlight-hud-frame');
+    function coldlightToggleFullscreen(frameId, btnId) {
+      var frame = document.getElementById(frameId);
       if (!document.fullscreenElement) {
         (frame.requestFullscreen || frame.webkitRequestFullscreen).call(frame);
       } else {
@@ -56,13 +64,35 @@ summary: >
       }
     }
     document.addEventListener('fullscreenchange', function () {
-      var btn = document.getElementById('coldlight-fullscreen-btn');
-      if (!btn) return;
-      btn.textContent = document.fullscreenElement ? '⛶ Exit Fullscreen' : '⛶ Fullscreen';
+      ['coldlight-menu-fullscreen-btn', 'coldlight-hud-fullscreen-btn'].forEach(function (id) {
+        var btn = document.getElementById(id);
+        if (!btn) return;
+        var frame = btn.previousElementSibling;
+        btn.textContent = (document.fullscreenElement === frame) ? '⛶ Exit Fullscreen' : '⛶ Fullscreen';
+      });
     });
   </script>
 
   <p style="text-align: center; font-style: italic;">Interactive HUD concept (Splinter Cell: Blacklist gameplay used as background)</p>
+
+  <h2>Wireframes</h2>
+  <p>A set of annotated UI wireframes documenting the complete interface architecture: the in-game HUD across its
+  two core states (default play and equipment wheel open) and the full six-screen menu flow (title, options,
+  mission select, intel briefing, loadout/ready-up, and mission debrief). Each frame maps element placement,
+  anchoring logic, and interaction behaviour - which elements are persistent versus toggleable, how world-space
+  markers tether to their targets, the slot-then-item assignment model in the loadout, the hold-to-commence pattern
+  shared between menus and HUD, and the sequencing of animated reveals (decode text, count-up telemetry, badge
+  stamping). Produced alongside the interactive prototype above as system documentation, the wireframes separate
+  structural decisions from visual treatment so each can be critiqued and iterated independently, and served as the
+  implementation reference for the UMG build. Delivered as an eight-page annotated PDF using standard wireframe
+  conventions (solid for persistent containers, dashed for contextual elements, numbered behavioural callouts).</p>
+
+  <div style="width: 100%; max-width: 960px; margin: 1.5em auto;">
+    <embed src="/projects/Coldlight/coldlight-wireframes.pdf" type="application/pdf" style="width: 100%; height: 80vh; border: 1px solid rgba(255,255,255,0.15); display: block;" />
+    <p style="text-align: center; margin-top: 0.5em;">
+      <a href="/projects/Coldlight/coldlight-wireframes.pdf" target="_blank" class="button-link">Open / Download PDF</a>
+    </p>
+  </div>
 
   <h2>Engine, Date &amp; Role</h2>
   <p>Built as an interactive HTML/CSS/JS motion prototype in 2026, as pre-production UI design for an Unreal Engine
