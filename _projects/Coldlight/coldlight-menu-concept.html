@@ -79,7 +79,7 @@
 
   /* persistent footer */
   .footer {
-    position: fixed; left: 3%; right: 3%; bottom: 3%;
+    position: absolute; left: 58px; right: 58px; bottom: 34px;
     display: flex; justify-content: space-between;
     font-size: 9px; letter-spacing: 0.22em;
     color: var(--line-dim);
@@ -114,17 +114,25 @@
   }
 
   /* ================= SCREEN SYSTEM ================= */
+  /* Reference-resolution stage: authored at 1920x1080, uniformly scaled to fit
+     the viewport (same model as UMG DPI scaling). */
+  #stage {
+    position: fixed; left: 50%; top: 50%;
+    width: 1920px; height: 1080px;
+    transform: translate(-50%, -50%) scale(var(--ui-scale, 1));
+    z-index: 10;
+  }
   .screen {
-    position: fixed; inset: 0;
+    position: absolute; inset: 0;
     display: none;
-    padding: 5% 6%;
+    padding: 100px 120px;
     z-index: 10;
   }
   .screen.active { display: block; animation: screenIn 0.25s ease; }
   @keyframes screenIn { from { opacity: 0; } }
 
   .back-hint {
-    position: fixed; left: 3%; top: 3.5%;
+    position: absolute; left: 58px; top: 40px;
     font-size: 10px; letter-spacing: 0.26em;
     color: var(--line-dim);
     z-index: 50;
@@ -133,15 +141,15 @@
   .back-hint:hover { color: var(--ink); }
 
   /* ================= TITLE ================= */
-  #screen-title .title-block { margin-top: 12vh; }
+  #screen-title .title-block { margin-top: 120px; }
   #screen-title h1.display {
-    font-size: clamp(56px, 9vw, 130px);
+    font-size: 128px;
     letter-spacing: 0.16em;
     line-height: 0.95;
   }
   #screen-title .subtitle { margin-top: 10px; font-size: 11px; letter-spacing: 0.5em; color: var(--line-dim); }
 
-  .menu-list { margin-top: 7vh; display: flex; flex-direction: column; gap: 4px; width: min(380px, 60vw); }
+  .menu-list { margin-top: 72px; display: flex; flex-direction: column; gap: 4px; width: 420px; }
   .menu-item {
     display: flex; align-items: center; gap: 16px;
     padding: 11px 4px;
@@ -169,10 +177,10 @@
   .menu-item.dim { opacity: 0.35; pointer-events: none; }
 
   /* ================= OPTIONS ================= */
-  .screen-head { margin-bottom: 4vh; }
-  .screen-head h2.display { font-size: clamp(28px, 3.4vw, 46px); margin-top: 6px; }
+  .screen-head { margin-bottom: 44px; }
+  .screen-head h2.display { font-size: 46px; margin-top: 6px; }
 
-  .options-body { display: flex; gap: 5vw; }
+  .options-body { display: flex; gap: 100px; }
   .opt-cats { display: flex; flex-direction: column; gap: 2px; width: 200px; flex: none; }
   .opt-cat {
     text-align: left; padding: 10px 6px;
@@ -184,7 +192,7 @@
   .opt-cat:hover { color: var(--ink); }
   .opt-cat.on { color: var(--mark); border-left-color: var(--mark); padding-left: 14px; }
 
-  .opt-rows { flex: 1; max-width: 640px; }
+  .opt-rows { flex: 1; max-width: 820px; }
   .opt-row {
     display: flex; align-items: center; justify-content: space-between;
     padding: 13px 2px;
@@ -217,8 +225,8 @@
   .slider .val { margin-left: 14px; font-size: 9.5px; color: var(--line-dim); width: 34px; text-align: right; }
 
   /* ================= MISSION SELECT ================= */
-  .missions-body { display: flex; gap: 5vw; align-items: flex-start; }
-  .mission-list { width: 330px; flex: none; display: flex; flex-direction: column; }
+  .missions-body { display: flex; gap: 100px; align-items: flex-start; }
+  .mission-list { width: 380px; flex: none; display: flex; flex-direction: column; }
   .mission-li {
     display: flex; align-items: baseline; gap: 14px;
     text-align: left;
@@ -237,13 +245,13 @@
   .mission-li.on { color: var(--mark); border-bottom-color: var(--mark); }
   .mission-li.locked { opacity: 0.3; pointer-events: none; }
 
-  .mission-detail { flex: 1; max-width: 620px; }
-  .mission-detail h2.display { font-size: clamp(26px, 3vw, 42px); min-height: 1.2em; font-family: 'Share Tech Mono', monospace; font-weight: 400; letter-spacing: 0.08em; }
+  .mission-detail { flex: 1; max-width: 760px; }
+  .mission-detail h2.display { font-size: 40px; min-height: 1.2em; font-family: 'Share Tech Mono', monospace; font-weight: 400; letter-spacing: 0.08em; }
   .mission-map {
     margin-top: 20px;
     border: 1px solid var(--line-faint);
     position: relative;
-    height: 240px;
+    height: 300px;
     overflow: hidden;
   }
   .mission-map svg { width: 100%; height: 100%; }
@@ -284,8 +292,8 @@
   .cta span { position: relative; }
 
   /* ================= LOADOUT ================= */
-  .loadout-body { display: flex; gap: 5vw; align-items: flex-start; }
-  .slots-col { width: 300px; flex: none; }
+  .loadout-body { display: flex; gap: 100px; align-items: flex-start; }
+  .slots-col { width: 360px; flex: none; }
   .slot {
     border: 1px solid var(--line-faint);
     padding: 12px 14px;
@@ -311,7 +319,7 @@
   .slot.on::before { left: -4px; top: -4px; border-right: none; border-bottom: none; }
   .slot.on::after { right: -4px; bottom: -4px; border-left: none; border-top: none; }
 
-  .armory { flex: 1; max-width: 640px; }
+  .armory { flex: 1; max-width: 820px; }
   .armory-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -332,8 +340,8 @@
   .loadout-hint { margin-top: 16px; }
 
   /* ================= BRIEFING ================= */
-  .briefing-body { display: flex; gap: 5vw; align-items: flex-start; }
-  .sitrep-col { flex: 1; max-width: 560px; }
+  .briefing-body { display: flex; gap: 100px; align-items: flex-start; }
+  .sitrep-col { flex: 1; max-width: 720px; }
   .sitrep {
     font-size: 11.5px; letter-spacing: 0.08em; line-height: 2.1;
     color: var(--ink);
@@ -346,7 +354,7 @@
     animation: pulse 0.9s steps(1) infinite;
     vertical-align: text-bottom;
   }
-  .intel-col { width: 340px; flex: none; display: flex; flex-direction: column; gap: 22px; }
+  .intel-col { width: 420px; flex: none; display: flex; flex-direction: column; gap: 24px; }
 
   .brief-objectives .obj-line {
     display: flex; align-items: center; gap: 10px;
@@ -401,8 +409,8 @@
   .intercept polyline { fill: none; stroke: var(--line); stroke-width: 1; }
 
   /* ================= RESULTS ================= */
-  .results-body { display: flex; gap: 6vw; align-items: flex-start; margin-top: 1vh; }
-  .stats-col { width: 360px; flex: none; }
+  .results-body { display: flex; gap: 110px; align-items: flex-start; margin-top: 10px; }
+  .stats-col { width: 440px; flex: none; }
   .stat-row {
     display: flex; justify-content: space-between; align-items: baseline;
     padding: 11px 2px;
@@ -412,7 +420,7 @@
   }
   .stat-row b { font-weight: 400; color: var(--mark); font-size: 15px; letter-spacing: 0.1em; }
 
-  .ratings-col { flex: 1; max-width: 560px; }
+  .ratings-col { flex: 1; max-width: 680px; }
   .badges { display: flex; gap: 14px; margin-top: 4px; }
   .badge {
     flex: 1;
@@ -445,7 +453,7 @@
 
   .final-score { margin-top: 30px; }
   .final-score .num {
-    font-size: clamp(40px, 5vw, 64px);
+    font-size: 64px;
     color: var(--mark);
     letter-spacing: 0.06em;
   }
@@ -502,13 +510,14 @@
     <div class="particles" id="particles"></div>
   </div>
 
+  <div id="stage">
   <button class="back-hint" id="backBtn" style="display: none;">◂ BACK [ESC]</button>
 
   <!-- ================= TITLE ================= -->
   <section class="screen" id="screen-title">
     <div class="title-block draw" style="--d: 0.15s;">
       <div>
-        <div class="eyebrow"> </div>
+        <div class="eyebrow">PHANTOMWIRE GAMES PRESENTS</div>
         <h1 class="display" id="titleDecode" data-text="COLDLIGHT"></h1>
         <div class="subtitle">A COVERT OPERATIONS THRILLER</div>
       </div>
@@ -734,6 +743,12 @@
     </div>
   </section>
 
+  <div class="footer">
+    <span>COLDLIGHT · PRE-ALPHA MENU CONCEPT</span>
+    <span>BUILD <span id="buildHex">0x4F2A</span> · PHANTOMWIRE GAMES</span>
+  </div>
+  </div><!-- /stage -->
+
   <!-- concept nav -->
   <nav class="jump" aria-label="Screen preview">
     <div class="eyebrow">SCREENS</div>
@@ -744,11 +759,6 @@
     <button data-goto="screen-loadout">LOADOUT</button>
     <button data-goto="screen-results">RESULTS</button>
   </nav>
-
-  <div class="footer">
-    <span>COLDLIGHT · PRE-ALPHA MENU CONCEPT</span>
-    <span>BUILD <span id="buildHex">0x4F2A</span> · PHANTOMWIRE GAMES</span>
-  </div>
 
   <div class="vignette"></div>
   <div class="grain"></div>
@@ -1068,6 +1078,14 @@
   readyBtn.addEventListener("pointerdown", startHold);
   readyBtn.addEventListener("pointerup", endHold);
   readyBtn.addEventListener("pointerleave", endHold);
+
+  /* ---------- reference-resolution scaling ---------- */
+  function fitStage() {
+    const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    document.documentElement.style.setProperty("--ui-scale", scale);
+  }
+  window.addEventListener("resize", fitStage);
+  fitStage();
 
   /* ---------- boot ---------- */
   setScreen("screen-title");
