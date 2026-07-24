@@ -330,6 +330,97 @@
     white-space: nowrap;
   }
 
+  /* =========== PAUSE MENU =========== */
+  body.paused .shot { filter: brightness(0.28) saturate(0.3) blur(2px); }
+  body.paused .stage > *:not(.shot):not(.pause-layer):not(.vignette):not(.grain) { opacity: 0.08; }
+
+  .pause-layer {
+    position: absolute; inset: 0; z-index: 46;
+    padding: 6% 7%;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  body.paused .pause-layer { opacity: 1; pointer-events: auto; }
+
+  .pause-head .eyebrow-p {
+    font-size: 0.6vw; letter-spacing: 0.42em;
+    color: var(--line-dim);
+  }
+  .pause-head h1 {
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
+    font-size: 3.4vw; letter-spacing: 0.1em;
+    color: var(--mark);
+    margin-top: 0.4vw;
+    text-shadow: 0 2px 14px rgba(0,0,0,0.8);
+  }
+  .pause-head .rule {
+    width: 46vw; height: 1px;
+    background: var(--line);
+    margin-top: 0.8vw;
+    transform-origin: left center;
+  }
+  body.paused .pause-head .rule { animation: lineDraw 0.45s cubic-bezier(0.3, 0.9, 0.2, 1) backwards; }
+
+  .pause-body { display: flex; gap: 7vw; margin-top: 2.4vw; }
+
+  .pause-menu { display: flex; flex-direction: column; width: 20vw; }
+  .p-item {
+    font-family: 'Share Tech Mono', monospace;
+    display: flex; align-items: center; gap: 0.9vw;
+    text-align: left;
+    background: none; border: none; cursor: pointer;
+    padding: 0.75vw 0.3vw;
+    font-size: 0.8vw; letter-spacing: 0.3em;
+    color: var(--line-dim);
+    border-bottom: 1px solid var(--line-faint);
+    transition: color 0.15s, padding-left 0.2s, border-color 0.15s;
+  }
+  body.paused .p-item { animation: contentIn 0.3s ease backwards; }
+  @keyframes contentIn { from { opacity: 0; transform: translateY(5px); } }
+  .p-item .pidx { font-size: 0.55vw; color: var(--line-faint); }
+  .p-item:hover, .p-item:focus-visible {
+    color: var(--mark); padding-left: 0.9vw;
+    border-color: var(--line-dim); outline: none;
+  }
+  .p-item.danger { position: relative; overflow: hidden; }
+  .p-item.danger .pfill {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
+    background: var(--line-faint);
+    border-right: 1px solid var(--mark);
+    pointer-events: none;
+  }
+  .p-item.danger span { position: relative; }
+
+  .pause-status { width: 24vw; }
+  .pause-status .sec { margin-bottom: 1.6vw; }
+  .pause-status .sec-head {
+    font-size: 0.55vw; letter-spacing: 0.34em;
+    color: var(--line-dim);
+    border-bottom: 1px solid var(--line-faint);
+    padding-bottom: 0.4vw; margin-bottom: 0.5vw;
+  }
+  .pobj {
+    display: flex; align-items: center; gap: 0.6vw;
+    padding: 0.4vw 0;
+    font-family: 'Rajdhani', sans-serif; font-weight: 600;
+    font-size: 0.95vw; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .pobj .pmk { width: 0.5vw; height: 0.5vw; border: 1px solid var(--line); flex: none; }
+  .pobj .pmk.done { background: var(--mark); }
+  .pobj .pmk.active { background: var(--mark); animation: pulse 1.6s infinite; }
+  .pobj.done { opacity: 0.45; text-decoration: line-through; }
+  .pobj .ptag { margin-left: auto; font-family: 'Share Tech Mono', monospace; font-size: 0.5vw; letter-spacing: 0.2em; color: var(--line-dim); }
+  .prow {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6vw; letter-spacing: 0.2em;
+    color: var(--line-dim);
+    padding: 0.35vw 0;
+  }
+  .prow b { font-weight: 400; color: var(--mark); font-size: 0.8vw; }
+
   /* =========== SIM STRIP =========== */
   .simstate {
     position: fixed; top: 50%; right: 0; transform: translateY(-50%);
@@ -469,6 +560,43 @@
       </div>
     </div>
 
+    <!-- pause menu -->
+    <div class="pause-layer" id="pauseLayer" role="menu" aria-label="Pause menu">
+      <div class="pause-head">
+        <div class="eyebrow-p">M02 · BLACKSITE 04 · 02:47 AM</div>
+        <h1 id="pauseTitle" data-text="PAUSED"></h1>
+        <div class="rule"></div>
+      </div>
+      <div class="pause-body">
+        <nav class="pause-menu">
+          <button class="p-item" id="resumeBtn" style="animation-delay: 0.15s;"><span class="pidx">01</span>RESUME</button>
+          <button class="p-item" style="animation-delay: 0.22s;"><span class="pidx">02</span>RESTART CHECKPOINT</button>
+          <button class="p-item" style="animation-delay: 0.29s;"><span class="pidx">03</span>RESTART OPERATION</button>
+          <button class="p-item" style="animation-delay: 0.36s;"><span class="pidx">04</span>OPTIONS</button>
+          <button class="p-item danger" id="abandonBtn" style="animation-delay: 0.43s;">
+            <div class="pfill" id="abandonFill"></div>
+            <span class="pidx">05</span><span>ABANDON · HOLD</span>
+          </button>
+        </nav>
+        <div class="pause-status">
+          <div class="sec">
+            <div class="sec-head">OBJECTIVES</div>
+            <div class="pobj done"><span class="pmk done"></span>Infiltrate the compound<span class="ptag">DONE</span></div>
+            <div class="pobj"><span class="pmk active"></span>Tap the uplink terminal<span class="ptag">PRIMARY</span></div>
+            <div class="pobj"><span class="pmk"></span>Leave no trace<span class="ptag">SECONDARY</span></div>
+          </div>
+          <div class="sec">
+            <div class="sec-head">CONDUCT · THIS OPERATION</div>
+            <div class="prow"><span>ELAPSED</span><b>12:47</b></div>
+            <div class="prow"><span>DETECTIONS</span><b>0</b></div>
+            <div class="prow"><span>ALERTS RAISED</span><b>0</b></div>
+            <div class="prow"><span>NEUTRALIZED · NONLETHAL</span><b>1</b></div>
+            <div class="prow"><span>INTEL RECOVERED</span><b>1 / 3</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="vignette"></div>
     <div class="grain"></div>
   </div>
@@ -487,6 +615,7 @@
     <button class="on" data-toggle="objMarkerEl" data-key="4">MARKER [4]</button>
     <button class="on" data-toggle="hostileEl" data-key="5">HOSTILES [5]</button>
     <button id="wheelBtn">WHEEL [Q]</button>
+    <button id="pauseBtn">PAUSE [P]</button>
   </nav>
 
 <script>
@@ -763,6 +892,35 @@
     document.getElementById("reserveCount").textContent = it.res;
   }
 
+  /* ---------- pause menu ---------- */
+  const pauseBtn = document.getElementById("pauseBtn");
+  const pauseTitle = document.getElementById("pauseTitle");
+  function togglePause(force) {
+    const open = force !== undefined ? force : !document.body.classList.contains("paused");
+    if (open) toggleWheel(false);
+    document.body.classList.toggle("paused", open);
+    pauseBtn.classList.toggle("on", open);
+    if (open) decode(pauseTitle, 120);
+  }
+  pauseBtn.addEventListener("click", () => togglePause());
+  document.getElementById("resumeBtn").addEventListener("click", () => togglePause(false));
+
+  /* abandon: destructive action = hold-to-confirm */
+  const abandonBtn = document.getElementById("abandonBtn");
+  const abandonFill = document.getElementById("abandonFill");
+  let abT0 = null, abRAF = null;
+  function abTick(t) {
+    const k = Math.min(1, (t - abT0) / 900);
+    abandonFill.style.width = (k * 100) + "%";
+    if (k >= 1) { abEnd(); togglePause(false); return; }
+    abRAF = requestAnimationFrame(abTick);
+  }
+  function abStart() { abT0 = performance.now(); abRAF = requestAnimationFrame(abTick); }
+  function abEnd() { if (abRAF) cancelAnimationFrame(abRAF); abRAF = null; abandonFill.style.width = "0%"; }
+  abandonBtn.addEventListener("pointerdown", abStart);
+  abandonBtn.addEventListener("pointerup", abEnd);
+  abandonBtn.addEventListener("pointerleave", abEnd);
+
   /* ---------- wheel open/close ---------- */
   const wheelBtn = document.getElementById("wheelBtn");
   const rimTrace = document.querySelector(".rim-trace");
@@ -778,10 +936,14 @@
   }
   wheelBtn.addEventListener("click", () => toggleWheel());
   window.addEventListener("keydown", e => {
-    if (e.key.toLowerCase() === "q") toggleWheel();
+    if (e.key.toLowerCase() === "q" && !document.body.classList.contains("paused")) toggleWheel();
+    if (e.key.toLowerCase() === "p") togglePause();
     if (e.key.toLowerCase() === "o") toggleObjective();
     elToggles.forEach(btn => { if (e.key === btn.dataset.key) btn.click(); });
-    if (e.key === "Escape") toggleWheel(false);
+    if (e.key === "Escape") {
+      if (document.body.classList.contains("paused")) togglePause(false);
+      else toggleWheel(false);
+    }
     if (document.body.classList.contains("wheel-open")) {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); setSelected((selected + 1) % items.length); }
       if (e.key === "ArrowLeft"  || e.key === "ArrowUp")   { e.preventDefault(); setSelected((selected - 1 + items.length) % items.length); }
