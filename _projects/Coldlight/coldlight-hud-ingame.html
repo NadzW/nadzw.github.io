@@ -55,7 +55,7 @@
     transition: filter 0.3s ease;
   }
   body.wheel-open .shot { filter: brightness(0.35) saturate(0.6); }
-  body.wheel-open .stage > *:not(.shot):not(.wheel-anchor) { opacity: 0.15; transition: opacity 0.2s; }
+  body.wheel-open .stage > *:not(.shot):not(.wheel-anchor):not(.pause-layer):not(.vignette):not(.grain) { opacity: 0.15; transition: opacity 0.2s; }
   .stage > * { transition: opacity 0.2s; }
 
   .grain {
@@ -332,7 +332,7 @@
 
   /* =========== PAUSE MENU =========== */
   body.paused .shot { filter: brightness(0.28) saturate(0.3) blur(2px); }
-  body.paused .stage > *:not(.shot):not(.pause-layer):not(.vignette):not(.grain) { opacity: 0.08; }
+  body.paused .stage > *:not(.shot):not(.pause-layer):not(.wheel-anchor):not(.vignette):not(.grain) { opacity: 0.08; }
 
   .pause-layer {
     position: absolute; inset: 0; z-index: 46;
