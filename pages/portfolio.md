@@ -53,6 +53,10 @@ uiux_design_cards:
     url: /portfolio/project-coldlight/
     image: /assets/images/card-coldlight.png
     description: An interactive interface design for stealth game, Project Coldlight.
+  - title: Easy Icon Font
+    url: /portfolio/easy-icon-font/
+    image: /assets/images/card-eif.jpg
+    description: A C++/Python UE plugin that converts icons into font glyphs for crisp, colorable rich text icons.
   - title: HUDCore
     url: /portfolio/hudcore/
     image: /assets/images/card-hc.png
