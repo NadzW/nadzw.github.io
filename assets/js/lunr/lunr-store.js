@@ -100,4 +100,10 @@ var store = [{
         "tags": [],
         "url": "/portfolio/project-coldlight/",
         "teaser": null
+      },{
+        "title": "Easy Icon Font",
+        "excerpt":" ","categories": [],
+        "tags": [],
+        "url": "/portfolio/easy-icon-font/",
+        "teaser": null
       }]

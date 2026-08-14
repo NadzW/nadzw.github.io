@@ -1,0 +1,314 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Easy Icon Font - Nadeem Wali</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Nadeem Wali">
+  
+  <meta property="article:author" content="Nadeem Wali">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Nadeem Wali">
+<meta property="og:title" content="Easy Icon Font">
+<meta property="og:url" content="https://nadzw.github.io/portfolio/easy-icon-font/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2026-08-01T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://nadzw.github.io/portfolio/easy-icon-font/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--project" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Nadeem Wali
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/portfolio/"
+                
+                
+              >Portfolio</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/blog/"
+                
+                
+              >Blogs</a>
+            </li></ul>
+        
+        <button class="nav-burger" id="nav-burger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-nav" id="mobile-nav">
+  <ul><li>
+        <a
+          href="/about/"
+          
+          
+        >About</a>
+      </li><li>
+        <a
+          href="/portfolio/"
+          
+          
+        >Portfolio</a>
+      </li><li>
+        <a
+          href="/blog/"
+          
+          
+        >Blogs</a>
+      </li></ul>
+</div>
+
+<script>
+(function () {
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('mobile-nav');
+  if (!burger || !menu) return;
+
+  function closeMenu() {
+    burger.classList.remove('open');
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  }
+
+  burger.addEventListener('click', function () {
+    var isOpen = !burger.classList.contains('open');
+    burger.classList.toggle('open', isOpen);
+    menu.classList.toggle('open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
+  });
+
+  Array.prototype.forEach.call(menu.querySelectorAll('a'), function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
+
+
+    <div class="initial-content">
+      <main class="project-page">
+    <div class="container">
+        <h1>Easy Icon Font</h1>
+        
+        <p class="project-meta">
+            PhantomWire Games | Tools Programmer (Solo) | August 2026 | Unreal Engine 5.1 - 5.8
+        </p>
+        
+
+        
+        <img src="/assets/images/banner-eif.png" alt="Easy Icon Font screenshot" class="project-image" />
+        
+
+        <section class="project-section">
+            <h2>Summary</h2>
+            <p><p>Easy Icon Font is a C++ and Python editor plugin for Unreal Engine that converts PNG, SVG, or WEBP icons directly into font glyphs - no external website or converter tool required. It auto-detects the best representation per icon: single-color SVGs become real vector glyph outlines, flat multi-color art gets quantized and traced into full-color COLR/CPAL glyphs, and anything that doesn't vectorize cleanly falls back to a plain texture automatically.</p>
+<a href="https://www.fab.com/listings/cda48a12-12f6-453a-9de9-16a1131f2e22" target="_blank" rel="noopener" class="button-link">View on Fab</a>
+<p>Icons built this way behave like real characters: they inherit text color, scale to any size with zero blur, and drop straight into rich text via a custom decorator - <code>&lt;icon id="icon_bell" size="32" color="#FF3B30"/&gt;</code> renders inline with the surrounding sentence. The whole pipeline runs from a custom Slate editor window with a live preview bar, one-click dependency setup, and automatic DataTable syncing, so adding or removing an icon is a single click rather than a manual asset-wrangling process.</p>
+<a href="/assets/images/blogs/eif/glyph-overview.jpg" data-lightbox="eif-glyph-overview"> <img src="/assets/images/blogs/eif/glyph-overview.jpg"></img> </a> <p style="text-align: center; font-style: italic;">Same icons, rasterized as font glyphs instead of a texture atlas - a fraction of the storage.</p>
+<iframe width="640" height="360" src="https://www.youtube.com/embed/iJ8ofo_JZPM" title="Easy Icon Font overview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p>The plugin ships with a ready-to-use icon widget and rich text decorator pre-wired out of the box, targets Unreal Engine 5.1 through 5.8 with version-guarded code paths for engine API differences across that range, and includes full Doxygen documentation covering setup, the widget/rich-text reference, and troubleshooting.</p>
+<p>More clips and screenshots are posted on <a href="https://x.com/I_AmShalashaska/status/2085828262098337888?s=20" target="_blank" rel="noopener">X / Twitter</a>.</p>
+</p>
+        </section>
+
+        
+
+        
+        <section class="project-section">
+            <h2>Skills</h2>
+            <ul>
+                
+                <li>C++ Editor Tooling (Slate)</li>
+                
+                <li>Python Scripting & Automation</li>
+                
+                <li>Font Engineering (TrueType/OpenType, COLR/CPAL)</li>
+                
+                <li>UMG & Rich Text Systems</li>
+                
+                <li>Cross-Engine-Version Compatibility (UE 5.1-5.8)</li>
+                
+                <li>Doxygen Documentation</li>
+                
+            </ul>
+        </section>
+        
+
+        
+        
+        
+
+
+        
+
+    </div>
+</main>
+
+<script>
+    let currentSlide = 0;
+
+    function moveSlide(direction) {
+        const slides = document.querySelector('.carousel-images');
+        const totalSlides = slides.children.length;
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+</script>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://nadzw.itch.io" rel="nofollow noopener noreferrer"><i class="fa-brands fa-itch-io" aria-hidden="true"></i> Itch.io</a></li>
+        
+      
+        
+          <li><a href="https://github.com/NadzW" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/nadeem-wali-709707277/" rel="nofollow noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIN</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://nadzw.github.io">Nadeem Wali</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
