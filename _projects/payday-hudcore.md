@@ -18,9 +18,9 @@ skills:
   - Performance Optimization
   - Community Collaboration
 summary: >
-  <p>One of my most recent modding contributions to PAYDAY3 has been HUDCore. HUDCore is a custom HUD loader and Template HUD project that acts as a framework 
-  for modders to be able to easily make custom HUDs. It provides a modular system for building, loading, and managing HUD elements with minimal setup, allowing modders
-  to focus on functionality and styling.</p>
+  <p>HUDCore is a custom HUD loader and template project I developed for PAYDAY 3. It provides a modular framework
+  for building, loading and managing HUD elements with minimal setup, allowing modders to focus on functionality
+  and styling.</p>
   
   <p>Created out of the need for more consistent and flexible UI modding tools, HUDCore is the backbone of multiple community-made HUDs and dramatically simplifies UI design
   in Blueprint environments. </p>

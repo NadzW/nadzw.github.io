@@ -20,6 +20,12 @@ layout: default
             <p>{{ page.summary }}</p>
         </section>
 
+        {% if content != empty %}
+        <div class="project-content">
+            {{ content }}
+        </div>
+        {% endif %}
+
         {% if page.responsibilities %}
         <section class="project-section">
             <h2>Responsibilities</h2>

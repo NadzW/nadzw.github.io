@@ -63,6 +63,12 @@ $on-laptop: 800px;
 }
 
 @import "cards/layout";
+@import "pd3-modkit";
+
+// Keep long Unreal type names within the voxel article on narrow screens.
+.voxel-devlog .page__content :not(pre) > code {
+  overflow-wrap: anywhere;
+}
 // Note: cards/syntax-highlighting.scss is a leftover light-theme code
 // highlighter that fights the dark PhantomWire palette — the theme's own
 // minimal-mistakes/syntax partial (driven by the skin's base00-0f vars)

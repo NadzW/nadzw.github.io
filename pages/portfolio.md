@@ -3,11 +3,15 @@ permalink: /portfolio/
 layout: cards
 title: Portfolio
 highlighted_card:
-  title: 
-  url: /portfolio/project-coldlight/
-  image: /assets/images/card-coldlight.png
-  description: 
+  title: PAYDAY 3 Modkit & Modloader
+  url: /portfolio/payday3-modkit/
+  image: /assets/images/card-pd3-modkit.webp
+  description: Rebuilding PAYDAY 3's modding ecosystem with a custom Unreal Engine 5 editor, integrated development tools and an in-game modloader.
 game_design_cards: 
+  - title: PAYDAY 3 Modkit & Modloader
+    url: /portfolio/payday3-modkit/
+    image: /assets/images/card-pd3-modkit.webp
+    description: A custom UE5 editor, native class compatibility, CrimeForge development tools and the PDML runtime framework.
   - title: Nightshift
     url: /portfolio/nightshift/
     image: /assets/images/card-ns.webp
@@ -57,6 +61,10 @@ uiux_design_cards:
     url: /portfolio/easy-icon-font/
     image: /assets/images/card-eif.jpg
     description: A C++/Python UE plugin that converts icons into font glyphs for crisp, colorable rich text icons.
+  - title: Voxel 3D Map UI
+    url: /portfolio/voxel-3d-map-ui/
+    image: /assets/images/card-voxel.webp
+    description: A fully procedural, Death Stranding 2-style 3D voxel map system for COLDLIGHT, built for UE5.
   - title: HUDCore
     url: /portfolio/hudcore/
     image: /assets/images/card-hc.png

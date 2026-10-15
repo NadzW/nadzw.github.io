@@ -1,0 +1,6 @@
+<figure class="pd3-figure">
+  <a href="{{ include.path | relative_url }}" class="image-popup" aria-label="View full-size image: {{ include.alt | escape }}">
+    <img src="{{ include.path | relative_url }}" alt="{{ include.alt | escape }}" width="{{ include.width }}" height="{{ include.height }}" loading="lazy" decoding="async">
+  </a>
+  <figcaption>{{ include.caption | markdownify | remove: '<p>' | remove: '</p>' }}</figcaption>
+</figure>

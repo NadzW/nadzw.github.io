@@ -41,4 +41,10 @@ summary: >
   and includes full Doxygen documentation covering setup, the widget/rich-text reference, and troubleshooting.</p>
 
   <p>More clips and screenshots are posted on <a href="https://x.com/I_AmShalashaska/status/2085828262098337888?s=20" target="_blank" rel="noopener">X / Twitter</a>.</p>
+
+  <div class="blog-card">
+    <h3>📘 Full Devlog</h3>
+    <p>Font glyphs vs textures, proving COLR/CPAL actually works, the bearing bug that made icons render as ghostly double exposures, and shipping across six Unreal engine versions.</p>
+    <a href="/blog/easy-icon-font/" class="button-link">Read the Devlog</a>
+  </div>
 ---

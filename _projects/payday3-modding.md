@@ -18,6 +18,8 @@ skills:
   - Performance Optimization
   - Community Collaboration
 summary: >
+  <p>For my newer engine and tools work, see the <a href="/portfolio/payday3-modkit/">PAYDAY 3 Modkit &amp; Modloader</a>, a separate UE5 case study covering the custom editor, CrimeForge and PDML.</p>
+
   <p>As a dedicated modder for Payday 3, I've developed and maintained over 20 mods that enhance gameplay, user interface, 
   and overall player experience. My work involves deep integration with Unreal Engine 4, utilizing tools like UE4SS and Lua 
   scripting to implement client-side modifications. These projects showcase my proficiency in programming, UI/UX design, and 

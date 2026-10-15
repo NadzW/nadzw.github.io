@@ -1,8 +1,10 @@
 ---
 layout: default
 ---
+{% unless page.lightbox == false %}
 <link href="/lightbox/css/lightbox.css" rel="stylesheet" />
 <script src="/lightbox/js/lightbox.js"></script>
+{% endunless %}
 
 {% if page.header.overlay_color or page.header.overlay_image or page.header.image %}
   {% include page__hero.html %}
@@ -58,7 +60,7 @@ layout: default
         {% if site.data.ui-text[site.locale].meta_label %}
           <h4 class="page__meta-title">{{ site.data.ui-text[site.locale].meta_label }}</h4>
         {% endif %}
-        {% include page__taxonomy.html %}
+        {% unless page.show_taxonomy == false %}{% include page__taxonomy.html %}{% endunless %}
         {% include page__date.html %}
       </footer>
 

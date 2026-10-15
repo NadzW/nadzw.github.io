@@ -9,7 +9,7 @@ title                    : "Nadeem Wali"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Nadeem Wali"
-description              : "A game design graduate specializing in technical design and technical art, with a strong focus on Unreal Engine. I enjoy bridging the gap between art and programming, creating efficient systems that enhance gameplay and visuals."
+description              : "UI engineer and technical designer specialising in Unreal Engine, C++ and Blueprints. I build game interfaces, gameplay systems and development tools."
 url                      : "https://nadzw.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "NadzW/nadzw.github.io"
@@ -103,7 +103,7 @@ analytics:
 author:
   name             : "Nadeem Wali"
   avatar           : "/assets/images/Profile-Picture.jpg"
-  bio              : "A game design graduate specializing in **TECHNICAL DESIGN and QUEST DESIGN**. I develop modular systems, HUD/UI backend and exciting levels."
+  bio              : "**UI Engineer and Technical Designer**. I build modular gameplay systems, HUD/UI frameworks and development tools in Unreal Engine."
   location         : "Sheffield, UK"
   email            : "Nadeem.wali.2001@gmail.com"
   links:
