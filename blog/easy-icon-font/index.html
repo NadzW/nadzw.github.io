@@ -1,0 +1,627 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Building Easy Icon Font: Fonts, COLR Glyphs, and the Bug That Made Every Icon Render Twice - Nadeem Wali</title>
+<meta name="description" content="How an in-editor Unreal tool for baking PNG/SVG icons into real font glyphs turned into mono-vector outlines, multi-layer COLR/CPAL color glyphs, a double-exposure rendering bug, and shipping across six engine versions.">
+
+
+  <meta name="author" content="Nadeem Wali">
+  
+  <meta property="article:author" content="Nadeem Wali">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Nadeem Wali">
+<meta property="og:title" content="Building Easy Icon Font: Fonts, COLR Glyphs, and the Bug That Made Every Icon Render Twice">
+<meta property="og:url" content="https://nadzw.github.io/blog/easy-icon-font/">
+
+
+  <meta property="og:description" content="How an in-editor Unreal tool for baking PNG/SVG icons into real font glyphs turned into mono-vector outlines, multi-layer COLR/CPAL color glyphs, a double-exposure rendering bug, and shipping across six engine versions.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2026-08-07T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://nadzw.github.io/blog/easy-icon-font/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Nadeem Wali
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/portfolio/"
+                
+                
+              >Portfolio</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/blog/"
+                
+                
+              >Blogs</a>
+            </li></ul>
+        
+        <button class="nav-burger" id="nav-burger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-nav" id="mobile-nav">
+  <ul><li>
+        <a
+          href="/about/"
+          
+          
+        >About</a>
+      </li><li>
+        <a
+          href="/portfolio/"
+          
+          
+        >Portfolio</a>
+      </li><li>
+        <a
+          href="/blog/"
+          
+          
+        >Blogs</a>
+      </li></ul>
+</div>
+
+<script>
+(function () {
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('mobile-nav');
+  if (!burger || !menu) return;
+
+  function closeMenu() {
+    burger.classList.remove('open');
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  }
+
+  burger.addEventListener('click', function () {
+    var isOpen = !burger.classList.contains('open');
+    burger.classList.toggle('open', isOpen);
+    menu.classList.toggle('open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
+  });
+
+  Array.prototype.forEach.call(menu.querySelectorAll('a'), function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
+
+
+    <div class="initial-content">
+      
+<link href="/lightbox/css/lightbox.css" rel="stylesheet" />
+<script src="/lightbox/js/lightbox.js"></script>
+
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Building Easy Icon Font: Fonts, COLR Glyphs, and the Bug That Made Every Icon Render Twice">
+    <meta itemprop="description" content="How an in-editor Unreal tool for baking PNG/SVG icons into real font glyphs turned into mono-vector outlines, multi-layer COLR/CPAL color glyphs, a double-exposure rendering bug, and shipping across six engine versions.">
+    <meta itemprop="datePublished" content="2026-08-07T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://nadzw.github.io/blog/easy-icon-font/" itemprop="url">Building Easy Icon Font: Fonts, COLR Glyphs, and the Bug That Made Every Icon Render Twice
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>I didn’t set out to build a font engineering tool. I set out to stop tabbing over to an external website every time I needed a new icon in my UI font. One afternoon of that friction was enough - so instead of opening yet another browser tab, I spent a day building an in-editor tool for Unreal that does the conversion itself. That day turned into a proper plugin, a custom Slate editor window, a Python font-building backend, and - because nothing in engine tooling is ever as simple as it first looks - a multi-day chase after a bug that made color icons render as ghostly double exposures of themselves.</p>
+
+<hr />
+
+<h2 id="why-fonts-for-icons-at-all">Why fonts for icons at all</h2>
+
+<p>The pitch is simple: an icon baked into a font behaves like a character. It inherits the color of the surrounding text for free. It scales to any size with zero blur, because it’s a vector outline, not a bitmap. And it drops straight into rich text - <code class="language-plaintext highlighter-rouge">&lt;icon id="icon_bell"/&gt;</code> sits inline with a sentence the same way a letter does, no manual placement code required.</p>
+
+<p>The honest tradeoff is that a texture atlas is simpler, more predictable in memory, and doesn’t need any of the font-table machinery a glyph does. I don’t think icon fonts are a universal answer - for a fixed icon grid like a HUD or inventory screen, an atlas is probably the better call. But for icons that need to sit inline with text at arbitrary sizes, or that need to stay pixel-sharp at every zoom level a UI might throw at them, a font earns its keep. So the plugin ended up supporting both: build a glyph when it makes sense, fall back to a texture when it doesn’t.</p>
+
+<h2 id="three-ways-to-bake-an-icon">Three ways to bake an icon</h2>
+
+<p>Not every icon source is the same kind of problem, so the tool auto-detects which of three representations actually fits:</p>
+
+<ul>
+  <li><strong>Mono-vector</strong> - a single flat-color SVG, extruded directly into a real <code class="language-plaintext highlighter-rouge">glyf</code> outline. Infinitely scalable, tinted by whatever text color it’s displayed with, exactly like a letter.</li>
+  <li><strong>Color-vector</strong> - flat, limited-palette raster art (or multi-fill SVG), quantized down to a small palette, traced region by region, and rebuilt as a multi-layer COLR/CPAL glyph. Still a true vector outline underneath - the color is just baked in rather than inherited.</li>
+  <li><strong>Texture fallback</strong> - anything that doesn’t vectorize cleanly (gradients, photographic detail) just becomes a plain <code class="language-plaintext highlighter-rouge">UTexture2D</code>, no font involved.</li>
+</ul>
+
+<p>The mono-vector path was the easy part - parse the SVG path data, walk the contours, hand them to a <code class="language-plaintext highlighter-rouge">TTGlyphPen</code>, done. Getting even-odd SVG fill rules to survive the trip into TrueType’s nonzero winding rule needed some care (a shape with a hole, like a letter “O” traced from a gear icon, needs its inner contour wound the opposite direction from its outer one, or the hole just fills solid) - but that was a solvable, well-understood problem.</p>
+
+<p>Color-vector was where things got interesting.</p>
+
+<h2 id="proving-colr-actually-worked-before-building-on-it">Proving COLR actually worked before building on it</h2>
+
+<p>COLR/CPAL - the OpenType extension that lets a single glyph be built from multiple colored outline layers stacked on top of each other - isn’t something every font renderer supports. Rather than build a whole quantize-and-trace pipeline on a hopeful assumption, I hand-built a tiny two-layer test font first: a red square behind a blue triangle, nothing else. Dropped it straight into a UMG Text Block in the editor.</p>
+
+<p>It rendered in color, correctly layered. That one test was worth more than any amount of documentation-reading - it confirmed Slate’s FreeType build genuinely reads COLR data, not just <code class="language-plaintext highlighter-rouge">glyf</code>, before I sank real time into the segmentation and tracing logic on top of it.</p>
+
+<h2 id="the-bug-that-made-icons-render-twice">The bug that made icons render twice</h2>
+
+<p>Once the real pipeline was built - PIL for quantization, <code class="language-plaintext highlighter-rouge">scikit-image</code> for contour tracing, <code class="language-plaintext highlighter-rouge">fontTools</code> for assembling the layers - I fed it a badge icon: a navy ring, a blue circle inside it, a gold star on top. Three flat colors, nested regions, a reasonable real-world test case.</p>
+
+<p>What came back looked like a double exposure. The ring showed up as an uneven crescent instead of a clean circle. The star had a ghost copy of itself offset diagonally, like the whole icon had been photographed through a slightly misaligned second lens.</p>
+
+<p>My first theory was a seam problem - each color traced independently, so maybe the boundary between two adjacent colors was getting simplified slightly differently on each side, leaving a sliver of a gap. I added mask dilation to make adjacent layers overlap instead of almost-touch. No change. Same ghosting, pixel-for-pixel identical to before.</p>
+
+<p>That result was actually the useful part - it meant the bug wasn’t in the boundary between colors, since a boundary fix had done nothing. I built a small standalone renderer to composite the layers by hand and inspect the raw glyph coordinates directly, bypassing every layer of assumption in between. And there it was: each color layer’s <code class="language-plaintext highlighter-rouge">xMin</code> didn’t match its <code class="language-plaintext highlighter-rouge">hmtx</code> left-side-bearing. I’d hardcoded every layer’s bearing to zero, but <code class="language-plaintext highlighter-rouge">TTGlyphPen</code>-built glyphs don’t have their bounds populated at build time - and a font renderer uses the mismatch between a glyph’s declared bearing and its actual outline position to <em>shift</em> the glyph horizontally. Every layer was getting shifted by a different, wrong amount, because every layer’s shape sat at a different true position and I’d told the renderer to pretend they all started at zero.</p>
+
+<p>The fix was small once found - compute the real bearing from each layer’s own geometry instead of assuming zero - but finding it meant ruling out two entire categories of plausible-sounding explanations first. The dilation attempt wasn’t wasted, either; it’s still in the pipeline today as a genuine safety margin against seam gaps, it just wasn’t <em>this</em> bug.</p>
+
+<h2 id="dont-ship-the-file-people-are-actively-editing">Don’t ship the file people are actively editing</h2>
+
+<p>Somewhere in testing, icons that had worked days earlier started rendering as the classic Windows “tofu” placeholder - the black box with PRIVATE USE stamped on it that shows up when a codepoint can’t resolve to a real glyph. The font file itself turned out to be fine. The actual problem was upstream of the font entirely: every plugin update I’d shipped included the <em>live, working</em> font file as part of the package. Extracting a new zip over an existing install silently overwrote whatever icons had already been built - there was no warning, no conflict prompt, just a quiet reset back to the shipped version.</p>
+
+<p>The fix became a small architectural rule: never ship the file a user is actively editing. The plugin now ships a blank template font that’s safe to overwrite on every update, and a one-time Setup step clones it into the real working file <em>only if that file doesn’t already exist</em>. Simple in hindsight, but it took losing test data to actually notice the update process was destructive in the first place.</p>
+
+<h2 id="supporting-six-engine-versions-is-its-own-project">Supporting six engine versions is its own project</h2>
+
+<p>Once the plugin worked, “does it work” turned out to have a much longer tail than expected. Building across Unreal 5.1 through 5.8 surfaced a small museum of version-specific problems: an <code class="language-plaintext highlighter-rouge">FString</code> factory method that didn’t exist yet in 5.1, a UPROPERTY category rule that’s only enforced under Engine-module packaging (never during normal project compiles, so it stayed invisible until the first real distribution build), a <code class="language-plaintext highlighter-rouge">FJsonObject</code> internal type that changed between engine releases, an MSVC toolset UE 5.2 specifically wasn’t validated against, an Android NDK mismatch on 5.1. None of these were bugs in the plugin’s own logic - each one was a real API or toolchain difference that only a genuine build against that specific engine version would ever catch.</p>
+
+<p>That eventually justified building a second piece of tooling alongside the plugin itself: a PowerShell script that builds, tests, and packages against every supported engine version in one pass, with a live dashboard and a final report listing the actual warning and error lines per version - not just a pass/fail count. Getting <em>that</em> script running reliably turned into its own small debugging arc, including a genuinely memorable one: <code class="language-plaintext highlighter-rouge">.ps1</code> files need a UTF-8 byte-order mark for Windows PowerShell to read certain characters correctly, and losing that one invisible marker was enough to make an otherwise-correct script throw parser errors on lines that had nothing wrong with them at all.</p>
+
+<h2 id="where-it-landed">Where it landed</h2>
+
+<p>The finished plugin is a custom Slate editor window - not a Blueprint utility widget, an actual native tool - with a live preview bar reading straight from the font file, a dependency status light, one-click Setup, and automatic DataTable syncing so the DataTable powering the icon lookup never drifts out of sync with the font itself. A rich text decorator lets icons sit inline with prose, with per-instance size and color overrides. Full Doxygen documentation covers setup, the widget and rich-text reference, and troubleshooting for the handful of failure modes real usage actually turned up.</p>
+
+<p>It’s on Fab now, still under active iteration - the SVG-native color-vector path (skipping the raster round-trip entirely for icons that started as multi-color SVGs) is the next thing on the list.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#easy-icon-font" class="page__taxonomy-item p-category" rel="tag">easy-icon-font</a><span class="sep">, </span>
+    
+      <a href="/tags/#phantomwire" class="page__taxonomy-item p-category" rel="tag">phantomwire</a><span class="sep">, </span>
+    
+      <a href="/tags/#tools-programming" class="page__taxonomy-item p-category" rel="tag">tools-programming</a><span class="sep">, </span>
+    
+      <a href="/tags/#unreal-engine" class="page__taxonomy-item p-category" rel="tag">unreal-engine</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#devlog" class="page__taxonomy-item p-category" rel="tag">devlog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2026-08-07T00:00:00+00:00">August 7, 2026</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://twitter.com/intent/tweet?text=Building+Easy+Icon+Font%3A+Fonts%2C+COLR+Glyphs%2C+and+the+Bug+That+Made+Every+Icon+Render+Twice%20https%3A%2F%2Fnadzw.github.io%2Fblog%2Feasy-icon-font%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnadzw.github.io%2Fblog%2Feasy-icon-font%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://nadzw.github.io/blog/easy-icon-font/" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/mover-cover-system/" class="pagination--pager" title="Building the Mover Cover System">Previous</a>
+    
+    
+      <a href="/blog/voxel-3d-ui-map/" class="pagination--pager" title="Building a Death Stranding 2-style Voxel 3D Map in Unreal Engine 5">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You may also enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/images/card-pd3-modkit.webp" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/rebuilding-payday3-modding/" rel="permalink">Rebuilding PAYDAY 3 Modding for Unreal Engine 5
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-10-14T23:00:00+00:00">October 14, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          13 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Building a custom UE5 compatibility editor, integrating reflected game types, and connecting CrimeForge’s authoring pipeline to the PDML runtime framework.
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/images/card-voxel.webp" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/voxel-3d-ui-map/" rel="permalink">Building a Death Stranding 2-style Voxel 3D Map in Unreal Engine 5
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How I built a fully procedural, artist-asset-free 3D voxel map for COLDLIGHT’s map screen - hemisphere capture, occluder culling, a 673K-instance editor free...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/mover-cover-system/" rel="permalink">Building the Mover Cover System
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How I built a network-predicted cover system on Unreal Engine’s experimental Mover plugin - wall classification, corners, gaps, a quaternion bug, and NetSeri...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/nightshift-devlog/" rel="permalink">Nightshift: From Getaway Driver to Elimination Circuit
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How Nightshift went from a Crazy Taxi-style prototype to a roguelite street racing tournament - vehicles, rendering, race framework, AI, UI, and the scope pi...</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://nadzw.itch.io" rel="nofollow noopener noreferrer"><i class="fa-brands fa-itch-io" aria-hidden="true"></i> Itch.io</a></li>
+        
+      
+        
+          <li><a href="https://github.com/NadzW" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/nadeem-wali-709707277/" rel="nofollow noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIN</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://nadzw.github.io">Nadeem Wali</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

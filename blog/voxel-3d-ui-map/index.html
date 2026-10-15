@@ -1,0 +1,693 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Building a Death Stranding 2-style Voxel 3D Map in Unreal Engine 5 - Nadeem Wali</title>
+<meta name="description" content="How I built a fully procedural, artist-asset-free 3D voxel map for COLDLIGHT’s map screen - hemisphere capture, occluder culling, a 673K-instance editor freeze, and the save/reload bugs that came with it.">
+
+
+  <meta name="author" content="Nadeem Wali">
+  
+  <meta property="article:author" content="Nadeem Wali">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Nadeem Wali">
+<meta property="og:title" content="Building a Death Stranding 2-style Voxel 3D Map in Unreal Engine 5">
+<meta property="og:url" content="https://nadzw.github.io/blog/voxel-3d-ui-map/">
+
+
+  <meta property="og:description" content="How I built a fully procedural, artist-asset-free 3D voxel map for COLDLIGHT’s map screen - hemisphere capture, occluder culling, a 673K-instance editor freeze, and the save/reload bugs that came with it.">
+
+
+
+  <meta property="og:image" content="https://nadzw.github.io/assets/images/card-voxel.webp">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-08-15T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://nadzw.github.io/blog/voxel-3d-ui-map/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single voxel-devlog" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Nadeem Wali
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/portfolio/"
+                
+                
+              >Portfolio</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/blog/"
+                
+                
+              >Blogs</a>
+            </li></ul>
+        
+        <button class="nav-burger" id="nav-burger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-nav" id="mobile-nav">
+  <ul><li>
+        <a
+          href="/about/"
+          
+          
+        >About</a>
+      </li><li>
+        <a
+          href="/portfolio/"
+          
+          
+        >Portfolio</a>
+      </li><li>
+        <a
+          href="/blog/"
+          
+          
+        >Blogs</a>
+      </li></ul>
+</div>
+
+<script>
+(function () {
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('mobile-nav');
+  if (!burger || !menu) return;
+
+  function closeMenu() {
+    burger.classList.remove('open');
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  }
+
+  burger.addEventListener('click', function () {
+    var isOpen = !burger.classList.contains('open');
+    burger.classList.toggle('open', isOpen);
+    menu.classList.toggle('open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
+  });
+
+  Array.prototype.forEach.call(menu.querySelectorAll('a'), function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Building a Death Stranding 2-style Voxel 3D Map in Unreal Engine 5">
+    <meta itemprop="description" content="How I built a fully procedural, artist-asset-free 3D voxel map for COLDLIGHT’s map screen - hemisphere capture, occluder culling, a 673K-instance editor freeze, and the save/reload bugs that came with it.">
+    <meta itemprop="datePublished" content="2026-08-15T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://nadzw.github.io/blog/voxel-3d-ui-map/" itemprop="url">Building a Death Stranding 2-style Voxel 3D Map in Unreal Engine 5
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Earlier this year, Kojima Productions’ Ildar Valeev gave a GDC talk called <a href="https://gdcvault.com/play/1035737/-DEATH-STRANDING-2-Making">“‘DEATH STRANDING 2’: Making of Voxel 3D UI Map”</a>, walking through how the studio built the game’s map screen: capturing an open-world level, converting it into voxel data, and rendering it back out without any hand-placed artist assets, while staying fast and memory-efficient.</p>
+
+<p>I wanted to see how far the same idea could go in our own UE5 project, for COLDLIGHT’s map screen. This post is the full technical breakdown of what that turned into - the pipeline, the performance work, and a whole category of bugs that only show up after a level save.</p>
+
+<figure class=""><a href="/assets/images/blogs/voxel/map-closeup.webp" class="image-popup" title="My implementation running in COLDLIGHT. The captured terrain is rendered as an interactive voxel map.
+"><img src="/assets/images/blogs/voxel/map-closeup.webp" alt="My voxel map running in COLDLIGHT, with captured canyon rock formations and terrain colours visible" /></a><figcaption>
+      My implementation running in COLDLIGHT. The captured terrain is rendered as an interactive voxel map.
+
+    </figcaption></figure>
+
+<p>The development screenshots show my COLDLIGHT implementation. The three reference slides below are credited to Ildar Valeev and Kojima Productions’ GDC presentation and illustrate the approach that inspired it. A shorter overview is on the <a href="/portfolio/voxel-3d-map-ui/">project page</a>.</p>
+
+<hr />
+
+<h2 id="the-high-level-pipeline">The high-level pipeline</h2>
+
+<p>The system splits cleanly into five phases, plus a UMG integration layer on top:</p>
+
+<ol>
+  <li><strong>Capture</strong> - sample the level from a grid of hemisphere and slice views, deduplicate into a voxel grid, and save the result to a self-describing binary file.</li>
+  <li><strong>Processing</strong> - a visibility flood-fill plus depth-based occluder culling, to discard geometry nothing can ever see.</li>
+  <li><strong>Packing</strong> - group surviving voxels into 4x4x4 blocks, each carrying Level-1 and Level-2 occupancy bitmasks and a render-data buffer.</li>
+  <li><strong>Chunking</strong> - group blocks by spatial region, with chunk-relative location indices instead of absolute ones.</li>
+  <li><strong>Rendering</strong> - bake it all into instanced meshes with a custom ray-box HLSL shader doing the actual per-voxel resolution.</li>
+</ol>
+
+<p>On top of that, a UMG integration layer drives an isolated scene capture with a free-orbiting camera, feeding a map widget the player actually interacts with.</p>
+
+<h2 id="capture-hemisphere--slice-passes">Capture: hemisphere + slice passes</h2>
+
+<p>The capture pass samples the level from two kinds of viewpoints - a hemisphere of directional views for broad coverage, and a grid of axis-aligned slice views to catch detail the hemisphere pass misses. Each capture reads depth and colour and unprojects the results into world-space points, which get deduplicated into a voxel grid as they come in.</p>
+
+<p>One early bug here was subtle: <code class="language-plaintext highlighter-rouge">SCS_DeviceDepth</code> was quantizing depth reads just enough to introduce real error at range. Switching to <code class="language-plaintext highlighter-rouge">SCS_SceneDepth</code> with matrix-free unprojection fixed it outright.</p>
+
+<p>The slice pass was also the single biggest performance win of the whole project, more on that below.</p>
+
+<figure class=""><a href="/assets/images/blogs/voxel/gdc-capture-pipeline.webp" class="image-popup" title="GDC reference, slide 10: hemisphere and slice capture followed by point-grid conversion. Ildar Valeev, Kojima Productions, ‘DEATH STRANDING 2’: Making of Voxel 3D UI Map.
+"><img src="/assets/images/blogs/voxel/gdc-capture-pipeline.webp" alt="Kojima Productions reference slide showing hemisphere capture, XYZ slice capture and conversion from a point cloud to a point grid" /></a><figcaption>
+      GDC reference, slide 10: hemisphere and slice capture followed by point-grid conversion. Ildar Valeev, Kojima Productions, <a href="https://gdcvault.com/play/1035737/-DEATH-STRANDING-2-Making">‘DEATH STRANDING 2’: Making of Voxel 3D UI Map</a>.
+
+    </figcaption></figure>
+
+<h2 id="processing-visibility-and-occluder-culling">Processing: visibility and occluder culling</h2>
+
+<p>Two culling passes run after capture. A visibility flood-fill removes points that aren’t reachable from open space, and a depth-based occluder culling pass removes points that are provably behind solid geometry from every relevant direction.</p>
+
+<figure class=""><a href="/assets/images/blogs/voxel/gdc-visibility-filter.webp" class="image-popup" title="GDC reference, slide 25: visibility filtering of a point grid. Ildar Valeev, Kojima Productions, ‘DEATH STRANDING 2’: Making of Voxel 3D UI Map.
+"><img src="/assets/images/blogs/voxel/gdc-visibility-filter.webp" alt="Kojima Productions reference diagram distinguishing visible space, flooded space and points removed by visibility filtering" /></a><figcaption>
+      GDC reference, slide 25: visibility filtering of a point grid. Ildar Valeev, Kojima Productions, <a href="https://gdcvault.com/play/1035737/-DEATH-STRANDING-2-Making">‘DEATH STRANDING 2’: Making of Voxel 3D UI Map</a>.
+
+    </figcaption></figure>
+
+<figure class=""><a href="/assets/images/blogs/voxel/gdc-depth-occluder.webp" class="image-popup" title="GDC reference, slide 26: depth occlusion. Ildar Valeev, Kojima Productions, ‘DEATH STRANDING 2’: Making of Voxel 3D UI Map.
+"><img src="/assets/images/blogs/voxel/gdc-depth-occluder.webp" alt="Kojima Productions reference diagram showing voxels hidden from a camera by a depth occluder mesh" /></a><figcaption>
+      GDC reference, slide 26: depth occlusion. Ildar Valeev, Kojima Productions, <a href="https://gdcvault.com/play/1035737/-DEATH-STRANDING-2-Making">‘DEATH STRANDING 2’: Making of Voxel 3D UI Map</a>.
+
+    </figcaption></figure>
+
+<p>The occluder culling pass went through a real redesign. The first version used a single top-down height map - “is there a higher point in this column?” - which works for most terrain but actively breaks on near-vertical geometry: a point on a cliff face can be the frontmost surface from a side-on view while still not being the topmost point in its column from directly above, so the height-map version was incorrectly stripping large sections of cliff faces. The fix was to make it properly six-directional (top, bottom, and all four horizontal axes), with a configurable minimum number of occluded directions required before a point gets culled. Visually confirmed fixed, and it still meaningfully culls genuinely buried geometry - roughly 20% of points removed post-fix, down from around 50% with the buggy version, at negligible extra cost (about 0.05s for all six directions on top of the existing pipeline).</p>
+
+<figure class=""><a href="/assets/images/blogs/voxel/canyon-voxel-detail.webp" class="image-popup" title="A development view from my implementation, showing voxel detail across the canyon’s rock faces.
+"><img src="/assets/images/blogs/voxel/canyon-voxel-detail.webp" alt="A development screenshot from my project showing voxel detail on steep canyon rock faces" /></a><figcaption>
+      A development view from my implementation, showing voxel detail across the canyon’s rock faces.
+
+    </figcaption></figure>
+
+<h2 id="packing-and-chunking">Packing and chunking</h2>
+
+<p>Surviving points get packed into 4x4x4 voxel blocks. Each block stores a 24-bit location index plus two levels of occupancy bitmask - an 8-bit Level-1 mask for 2x2x2 sub-regions, and a 64-bit Level-2 mask for individual voxels - alongside a start index into a render-data buffer holding the actual per-voxel colour data. Blocks then get grouped into spatial chunks, with their location indices re-expressed relative to the chunk’s own local grid rather than the whole capture volume.</p>
+
+<p>This is also where the project picked up its persistent Data Asset boundary: <code class="language-plaintext highlighter-rouge">UVoxelMapDataAsset</code> holds the packed chunk data plus the grid-context fields (capture center, grid origin, block world size, and so on) needed to decode block positions back into world space later. Without those fields traveling with the chunks, the packed data alone can’t be turned back into anything meaningful.</p>
+
+<h2 id="rendering-ray-box-voxel-shader">Rendering: ray-box voxel shader</h2>
+
+<p>Each block becomes one instance on a <code class="language-plaintext highlighter-rouge">UHierarchicalInstancedStaticMeshComponent</code>, billboarded and driven by custom material logic doing 4x4x4 DDA stepping through the block’s own occupancy bitmasks - resolving real per-voxel colour and depth per hit, not just showing a flat billboard. Distance-based LOD skips the full per-voxel stepping past a configurable threshold and falls back to a single representative colour for the block, with a dithered transition band instead of a hard pop.</p>
+
+<p>Per-voxel colour data is baked into a runtime lookup texture - one texel per captured voxel - wrapped across a fixed row width rather than using one unbounded row, since a single-row texture wide enough for a large multi-segment capture would blow straight past texture dimension limits.</p>
+
+<figure class=""><a href="/assets/images/blogs/voxel/billboard-wireframe.webp" class="image-popup" title="My renderer in wireframe. The screenshot’s annotation highlights the distinction between the underlying billboarded planes and the voxel detail produced by the shader.
+"><img src="/assets/images/blogs/voxel/billboard-wireframe.webp" alt="My voxel renderer shown in Unreal Editor wireframe, with an annotation explaining the shader-driven billboard planes" /></a><figcaption>
+      My renderer in wireframe. The screenshot’s annotation highlights the distinction between the underlying billboarded planes and the voxel detail produced by the shader.
+
+    </figcaption></figure>
+
+<h2 id="getting-to-production-scale">Getting to production scale</h2>
+
+<p>At real scale (a capture volume broken into 4000-unit segments, 64-unit voxels, 128 render resolution), the pipeline needed real performance work, all confirmed against real before/after timing:</p>
+
+<ul>
+  <li>The slice pass was oversampling 4-8x relative to what the geometry actually needed. Tuning slice count and spacing cut slice-pass time roughly 5x, for under 3% coverage loss.</li>
+  <li><code class="language-plaintext highlighter-rouge">ParallelFor</code> on both the per-pixel capture loop and the per-voxel culling loops.</li>
+  <li>The visibility flood-fill was rewritten from <code class="language-plaintext highlighter-rouge">TSet</code>/<code class="language-plaintext highlighter-rouge">TMap</code> hash lookups to dense <code class="language-plaintext highlighter-rouge">TBitArray</code> grids, O(1) indexing instead of hashing, for a 23x speedup on its own.</li>
+  <li>A per-view line-trace pre-check skips slice views aimed at open air before doing any real capture work.</li>
+</ul>
+
+<p>Altogether, a full per-segment pipeline (hemisphere + slice + visibility filter + occluder culling) went from multiple minutes per segment down to about 1.35 seconds, roughly a 175x improvement end to end. An async, pipelined GPU-readback rewrite was attempted for the slice pass specifically, but hit a genuine runtime hang and got abandoned in favor of the sampling-density fix, which solved the actual problem without the risk of touching RHI-level code.</p>
+
+<h2 id="the-instance-count-wall-673k-instances-and-the-editor-freeze">The instance-count wall: 673K instances and the editor freeze</h2>
+
+<p>Once real levels started producing 600K+ voxel block instances, selecting the render actor at all (in the outliner or the viewport) froze the editor solid. This turned out to be two separate problems wearing the same disguise:</p>
+
+<ul>
+  <li>Unreal’s per-instance selection outline system tries to draw a highlight around every single instance when an ISM/HISM component gets selected. At this scale that’s catastrophically expensive, and there’s no legitimate reason to ever select this component by hand: it’s a pure rendering proxy for already-baked data. Setting <code class="language-plaintext highlighter-rouge">bSelectable = false</code> on the component removes it from the selection system entirely.</li>
+  <li>Separately, <code class="language-plaintext highlighter-rouge">AddInstanceComponent</code> (needed so the runtime-created component actually saves with the level) implicitly sets <code class="language-plaintext highlighter-rouge">RF_Transactional</code>, which means Unreal’s undo/transaction system may snapshot the <em>entire</em> instance transform and custom-data array on any transactable operation that touches the component, a much larger cost than the Details-panel display itself, and the more likely real cause of the original freeze. Clearing <code class="language-plaintext highlighter-rouge">RF_Transactional</code> after adding the component keeps it saving with the level while excluding it from that snapshotting specifically.</li>
+</ul>
+
+<h2 id="splitting-capture-from-render">Splitting capture from render</h2>
+
+<p>The system started as a single actor doing both authoring-time capture and runtime display. That got split into two: <code class="language-plaintext highlighter-rouge">AVoxelMapCaptureActor</code> (capture, processing, packing, chunking - produces a Data Asset, and is only ever needed transiently during a bake) and <code class="language-plaintext highlighter-rouge">AVoxelMapRenderActor</code> (consumes already-packed chunk data, builds the renderable instances, and drives the UI’s orbit-camera scene capture - the thing that actually needs to exist in a shipped level). Shared structs and stateless utility functions (packed block/chunk data, the world-position decode function, a couple of bit-manipulation helpers) moved into a common shared module both actors use identically.</p>
+
+<p>This also meant building real editor tooling: a “Build Voxel 3D World” pipeline that spawns a capture actor from a set of project-wide default settings, auto-fits its capture bounds to the level, runs the full segmented capture, converts the result into a Data Asset in the level’s own content folder, then spawns and configures a render actor pointed at it, registered as a proper custom build type through Unreal’s own build system, so it shows up in the native Build menu alongside the engine’s own build steps, with a progress dialog and cancel support.</p>
+
+<h2 id="ui-integration-orbit-camera-and-markers">UI integration: orbit camera and markers</h2>
+
+<p>The map itself renders through an isolated <code class="language-plaintext highlighter-rouge">SceneCaptureComponent2D</code> restricted to a show-only list containing just the voxel block mesh: nothing else in the level bleeds into the capture. An orbit camera (yaw, pitch, zoom, pan, all independently clamped) feeds that capture, driven by mouse-drag and scroll input in a UMG widget.</p>
+
+<figure class=""><a href="/assets/images/blogs/voxel/map-overview.webp" class="image-popup" title="An elevated view of my COLDLIGHT map, showing the captured terrain isolated for the map interface.
+"><img src="/assets/images/blogs/voxel/map-overview.webp" alt="My COLDLIGHT map viewed from above, showing the captured terrain isolated against a black background" /></a><figcaption>
+      An elevated view of my COLDLIGHT map, showing the captured terrain isolated for the map interface.
+
+    </figcaption></figure>
+
+<p>The player’s own representation on the map ended up as two deliberately separate systems, rather than one:</p>
+
+<ul>
+  <li>A <strong>3D player model</strong>: a mesh placed directly in the voxel scene at the player’s real-world position, baked into the same scene capture as the voxel blocks. Since block instances are already placed at true absolute world-space positions, the player’s actual location drops straight in with no coordinate remapping needed.</li>
+  <li>A set of <strong>2D UI markers</strong>: player location, points of interest, objectives, and whatever else comes later, rendered as icons directly in the UMG widget, entirely independent of the 3D scene. Since these markers live in screen space, they need a live projection from world position through the map camera’s actual current view (its live transform and field of view) into normalized screen coordinates, not the player’s own camera, which is a different view entirely. That projection recomputes on every camera move, so markers track correctly through rotate, zoom, and pan, not just on initial placement.</li>
+</ul>
+
+<p>Keeping those two systems independent means a marker can exist without a 3D model and vice versa, and neither has to know anything about how the other is implemented.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#phantomwire" class="page__taxonomy-item p-category" rel="tag">phantomwire</a><span class="sep">, </span>
+    
+      <a href="/tags/#rendering" class="page__taxonomy-item p-category" rel="tag">rendering</a><span class="sep">, </span>
+    
+      <a href="/tags/#unreal-engine" class="page__taxonomy-item p-category" rel="tag">unreal-engine</a><span class="sep">, </span>
+    
+      <a href="/tags/#voxel-3d-map-ui" class="page__taxonomy-item p-category" rel="tag">voxel-3d-map-ui</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#devlog" class="page__taxonomy-item p-category" rel="tag">devlog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2026-08-15T00:00:00+00:00">August 15, 2026</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://twitter.com/intent/tweet?text=Building+a+Death+Stranding+2-style+Voxel+3D+Map+in+Unreal+Engine+5%20https%3A%2F%2Fnadzw.github.io%2Fblog%2Fvoxel-3d-ui-map%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnadzw.github.io%2Fblog%2Fvoxel-3d-ui-map%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://nadzw.github.io/blog/voxel-3d-ui-map/" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/easy-icon-font/" class="pagination--pager" title="Building Easy Icon Font: Fonts, COLR Glyphs, and the Bug That Made Every Icon Render Twice">Previous</a>
+    
+    
+      <a href="/blog/rebuilding-payday3-modding/" class="pagination--pager" title="Rebuilding PAYDAY 3 Modding for Unreal Engine 5">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You may also enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/images/card-pd3-modkit.webp" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/rebuilding-payday3-modding/" rel="permalink">Rebuilding PAYDAY 3 Modding for Unreal Engine 5
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-10-14T23:00:00+00:00">October 14, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          13 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Building a custom UE5 compatibility editor, integrating reflected game types, and connecting CrimeForge’s authoring pipeline to the PDML runtime framework.
+</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/easy-icon-font/" rel="permalink">Building Easy Icon Font: Fonts, COLR Glyphs, and the Bug That Made Every Icon Render Twice
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How an in-editor Unreal tool for baking PNG/SVG icons into real font glyphs turned into mono-vector outlines, multi-layer COLR/CPAL color glyphs, a double-ex...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/mover-cover-system/" rel="permalink">Building the Mover Cover System
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How I built a network-predicted cover system on Unreal Engine’s experimental Mover plugin - wall classification, corners, gaps, a quaternion bug, and NetSeri...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/nightshift-devlog/" rel="permalink">Nightshift: From Getaway Driver to Elimination Circuit
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How Nightshift went from a Crazy Taxi-style prototype to a roguelite street racing tournament - vehicles, rendering, race framework, AI, UI, and the scope pi...</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://nadzw.itch.io" rel="nofollow noopener noreferrer"><i class="fa-brands fa-itch-io" aria-hidden="true"></i> Itch.io</a></li>
+        
+      
+        
+          <li><a href="https://github.com/NadzW" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/nadeem-wali-709707277/" rel="nofollow noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIN</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://nadzw.github.io">Nadeem Wali</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

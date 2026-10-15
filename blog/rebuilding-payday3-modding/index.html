@@ -1,0 +1,712 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Rebuilding PAYDAY 3 Modding for Unreal Engine 5 - Nadeem Wali</title>
+<meta name="description" content="Building a custom UE5 compatibility editor, integrating reflected game types, and connecting CrimeForge’s authoring pipeline to the PDML runtime framework.">
+
+
+  <meta name="author" content="Nadeem Wali">
+  
+  <meta property="article:author" content="Nadeem Wali">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Nadeem Wali">
+<meta property="og:title" content="Rebuilding PAYDAY 3 Modding for Unreal Engine 5">
+<meta property="og:url" content="https://nadeemwali.com/blog/rebuilding-payday3-modding/">
+
+
+  <meta property="og:description" content="Building a custom UE5 compatibility editor, integrating reflected game types, and connecting CrimeForge’s authoring pipeline to the PDML runtime framework.">
+
+
+
+  <meta property="og:image" content="https://nadzw.github.io/assets/images/banner-pd3-modkit.webp">
+
+
+
+
+
+  <meta property="article:published_time" content="2026-10-14T23:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://nadeemwali.com/blog/rebuilding-payday3-modding/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single pd3-devlog" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Nadeem Wali
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/portfolio/"
+                
+                
+              >Portfolio</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/blog/"
+                
+                
+              >Blogs</a>
+            </li></ul>
+        
+        <button class="nav-burger" id="nav-burger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-nav" id="mobile-nav">
+  <ul><li>
+        <a
+          href="/about/"
+          
+          
+        >About</a>
+      </li><li>
+        <a
+          href="/portfolio/"
+          
+          
+        >Portfolio</a>
+      </li><li>
+        <a
+          href="/blog/"
+          
+          
+        >Blogs</a>
+      </li></ul>
+</div>
+
+<script>
+(function () {
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('mobile-nav');
+  if (!burger || !menu) return;
+
+  function closeMenu() {
+    burger.classList.remove('open');
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  }
+
+  burger.addEventListener('click', function () {
+    var isOpen = !burger.classList.contains('open');
+    burger.classList.toggle('open', isOpen);
+    menu.classList.toggle('open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
+  });
+
+  Array.prototype.forEach.call(menu.querySelectorAll('a'), function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Rebuilding PAYDAY 3 Modding for Unreal Engine 5">
+    <meta itemprop="description" content="Building a custom UE5 compatibility editor, integrating reflected game types, and connecting CrimeForge’s authoring pipeline to the PDML runtime framework.">
+    <meta itemprop="datePublished" content="2026-10-14T23:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://nadzw.github.io/blog/rebuilding-payday3-modding/" itemprop="url">Rebuilding PAYDAY 3 Modding for Unreal Engine 5
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-10-14T23:00:00+00:00">October 14, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>When PAYDAY 3 moved from Unreal Engine 4.27 to UE5 in August 2026, much of the community’s modding environment stopped being usable. Projects, generated definitions and packaging workflows had accumulated around the old engine. Moving to UE5 meant revisiting the assumptions underneath them.</p>
+
+<p>I had already spent a substantial amount of time inside those constraints. Alongside VanillaHUD+, HUDCore and other mods, I had helped maintain the community’s earlier UE4 development project. I knew how much work could happen before a modder reached the part they actually wanted to build: inspect cooked assets, reconstruct dependencies, repair definitions, cook through separate tools, then copy files into the game.</p>
+
+<p>Our initial aim was to recover that environment. Over a short, intensive period, it became a larger engineering project: a custom Unreal Editor, a Modkit built around installed game content, integrated authoring and packaging tools, and a runtime framework with its own in-game interface.</p>
+
+<p>This article covers how those pieces fit together and the boundaries we are still working through. The <a href="/portfolio/payday3-modkit/">portfolio case study</a> provides a shorter visual overview.</p>
+
+<h2 id="from-rebuilding-to-rethinking">From rebuilding to rethinking</h2>
+
+<p>Restoring the old workflow would have restored its friction too. In UE4, even a fairly focused modification could involve understanding several tools and maintaining a reconstructed version of the content it touched. Some categories, particularly materials and animations, were difficult because editor output and game expectations did not line up reliably.</p>
+
+<p>The question became: could we make the editor understand more of the existing game, then carry a mod from creation to runtime through a consistent workflow?</p>
+
+<p>I developed the custom UE5 compatibility editor, maintained the Modkit project, built CrimeForge for editor-side mod development, and rebuilt PDML for runtime integration. I also worked on Suzie integration, interfaces, templates and documentation. This remains a community project, with other developers contributing features, testing and guides. JMAP, Suzie, FModel, Unreal Engine and Wwise are existing projects that the toolchain builds upon.</p>
+
+<div class="pd3-workflow" aria-label="PAYDAY 3 mod development toolchain">
+  <ol>
+    <li><strong>Custom UE5 Editor</strong><span>Mount supported cooked game content</span></li>
+    <li><strong>PD3 Modkit</strong><span>Author content in the development project</span></li>
+    <li><strong>JMAP + Suzie</strong><span>Resolve reflected native game types</span></li>
+    <li><strong>CrimeForge</strong><span>Create, validate, cook and package mods</span></li>
+    <li><strong>PDML</strong><span>Integrate plugin mods into the game</span></li>
+  </ol>
+  <p>Installed game content and locally generated reflection data supply the editor. CrimeForge produces plugin mods for PDML.</p>
+</div>
+
+<h2 id="teaching-an-editor-to-load-shipped-content">Teaching an editor to load shipped content</h2>
+
+<p>A standard Unreal Editor expects editable source assets. PAYDAY 3 ships cooked packages prepared for its runtime. Those packages preserve what the game needs to execute and render, but do not retain the complete editor representation of every asset.</p>
+
+<p>The custom editor is based on Unreal Engine 5.5.4, matching the game version targeted by the Modkit. Users configure their installed game directory and AES key, supply the current <code class="language-plaintext highlighter-rouge">AssetRegistry.bin</code>, and generate native reflection data. The engine mounts supported retail containers, including IoStore content. The external registry makes supported assets discoverable in the Content Browser under their original <code class="language-plaintext highlighter-rouge">/Game/...</code> locations.</p>
+
+<p>Mounting a container is only the beginning. The editor also needs to resolve dependencies, understand the classes referenced by packages, and tolerate data that was serialized for a shipped game. My compatibility work spans cooked package loading, registry preservation during refreshes, cooked Blueprint references, thumbnails, supported level loading and unversioned property serialization.</p>
+
+<figure class="pd3-figure">
+  <a href="/assets/images/blogs/pd3-modkit/editor-heist.webp" class="image-popup" aria-label="View full-size image: A retail PAYDAY 3 heist level loaded in the custom UE5 editor">
+    <img src="/assets/images/blogs/pd3-modkit/editor-heist.webp" alt="A retail PAYDAY 3 heist level loaded in the custom UE5 editor" width="2537" height="1351" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Opening a supported heist in-editor gives modders context for assets and level structure. It does not recover the original heist graph source.
+</figcaption>
+</figure>
+
+<p>The architectural choice is to use the user’s installed game as the content source. Base-game assets generally remain read-only references and dependencies. The Modkit is not a redistributed PAYDAY 3 source project, and it does not contain the original native implementation. Modders create their own assets and supported replacements separately.</p>
+
+<p>That boundary is useful in practice. A creator can inspect an existing asset’s defaults and relationships without first recreating its entire surrounding project. It also keeps game-owned content external rather than turning each development checkout into a duplicate content library. The <a href="https://payday3-modding.github.io/Documentation/payday3-modding/modkit/custom-editor.html">custom editor documentation</a> describes the supported compatibility areas and local configuration.</p>
+
+<h2 id="reconstructing-the-missing-game-types">Reconstructing the missing game types</h2>
+
+<p>An asset registry answers which assets exist. It cannot supply the native classes those assets depend on.</p>
+
+<p>PAYDAY 3 content references game-specific types, properties and inheritance relationships that do not exist in ordinary Unreal Engine. A cooked Data Asset can be present and discoverable while still being unusable because its class is missing. Blueprint parents create the same problem.</p>
+
+<p>The Modkit addresses this through a modified JMAP dumping workflow and Suzie. <code class="language-plaintext highlighter-rouge">GenerateJmap.bat</code> gathers reflection metadata from a locally running game and places the JMAP in <code class="language-plaintext highlighter-rouge">Content/DynamicClasses/</code>. At project startup, Suzie reads that metadata, generates native class representations and registers them for editor use. My work integrates and extends that workflow for PAYDAY 3 compatibility.</p>
+
+<p>This makes reflected game classes available to supported assets and authoring workflows. Modders can reference game-specific Data Asset types and derive Blueprints from reconstructed native parents without manually maintaining an enormous collection of generated UHT stubs.</p>
+
+<p>There is an essential limit: a reflected function signature does not contain its original C++ implementation. The editor can understand that a function or property exists without reproducing the behaviour behind it. Features requiring that behaviour need explicit implementations or appropriate runtime integration.</p>
+
+<p>This also changes maintenance. After ordinary updates, users generally refresh the JMAP and <code class="language-plaintext highlighter-rouge">AssetRegistry.bin</code>, then restart the project so Suzie can regenerate local class data. Both inputs need to match the game build. It is more maintainable than treating generated definitions as permanent, although engine or serialization changes can still require code fixes. The <a href="https://payday3-modding.github.io/Documentation/payday3-modding/modkit/reflected-types.html">reflected-types guide</a> explains the two inputs separately.</p>
+
+<h2 id="making-cooked-assets-useful">Making cooked assets useful</h2>
+
+<p>Getting an asset to load is different from recovering an editable version. I have tried to keep that distinction clear in both the tooling and documentation.</p>
+
+<p>For supported assets, the workflow is to inspect the cooked original, convert it to an uncooked copy or supported replacement, make the required changes, and include the result in the mod’s packaging configuration. Some simpler types can be reconstructed substantially. More complex assets may expose useful defaults, components and references alongside generated stubs or placeholder data.</p>
+
+<p>Blueprints and widgets make the limitations especially visible. Cooked data generally cannot provide the original editor graphs. Reconstructing a class or widget hierarchy gives a creator a closer starting point, but it does not restore all of the original logic.</p>
+
+<figure class="pd3-figure">
+  <a href="/assets/images/blogs/pd3-modkit/widget.webp" class="image-popup" aria-label="View full-size image: Recovered PAYDAY 3 widget structure displayed in the Widget Blueprint editor">
+    <img src="/assets/images/blogs/pd3-modkit/widget.webp" alt="Recovered PAYDAY 3 widget structure displayed in the Widget Blueprint editor" width="2560" height="1440" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Widget reconstruction exposes recoverable structure. Original graphs and native implementations are not automatically restored.
+</figcaption>
+</figure>
+
+<p>As a UI Engineer, this has been one of the most interesting areas. A game widget depends on more than its appearance. Its parent class, properties, named bindings, animations and tick-related class flags can all matter. Recovering the hierarchy while losing expected binding metadata can leave something that looks plausible but still needs additional work. Widget compatibility and more complete reconstruction remain ongoing.</p>
+
+<p>Meshes, skeletons and animations provide another useful authoring path. Supported game skeletons can be used to preview custom animations, and the editor supports demonstrated static mesh, skeletal mesh and material workflows. Compatibility still varies by asset and build.</p>
+
+<figure class="pd3-figure">
+  <a href="/assets/images/blogs/pd3-modkit/animations.webp" class="image-popup" aria-label="View full-size image: A PAYDAY 3 character skeleton and animation preview inside the custom editor">
+    <img src="/assets/images/blogs/pd3-modkit/animations.webp" alt="A PAYDAY 3 character skeleton and animation preview inside the custom editor" width="1516" height="730" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Supported game skeletons and animation assets can provide context for authoring and previewing new content.
+</figcaption>
+</figure>
+
+<p>The team’s material baking work, credited to Columbus in the announcement, is another practical improvement. PAYDAY 3 materials can combine colour layers and masks that previously needed manual interpretation. Baking helps produce a more useful starting texture, although some materials still differ from their in-game appearance and accessory textures are not necessarily included.</p>
+
+<figure class="pd3-figure">
+  <a href="/assets/images/blogs/pd3-modkit/BakingTextures.webp" class="image-popup" aria-label="View full-size image: The custom editor&#39;s material texture baking workflow demonstrated on PAYDAY 3 content">
+    <img src="/assets/images/blogs/pd3-modkit/BakingTextures.webp" alt="The custom editor&#39;s material texture baking workflow demonstrated on PAYDAY 3 content" width="3840" height="2160" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Material baking demonstrated by the project. This is reconstruction assistance, with remaining coverage and visual limitations.
+</figcaption>
+</figure>
+
+<p>Audio has its own dependencies. The Modkit includes a modified Wwise integration based on <code class="language-plaintext highlighter-rouge">2023.1.15.8789.3579</code>; users supply matching Audiokinetic third-party SDK files. Compatible cooked audio workflows depend on that integration as well as the engine and reflection setup.</p>
+
+<h2 id="crimeforge-designing-around-the-modders-task">CrimeForge: designing around the modder’s task</h2>
+
+<p>Once the editor could expose useful game content, the surrounding workflow needed the same attention. I built CrimeForge as a custom editor plugin so creating, configuring and packaging a mod could happen through one interface.</p>
+
+<p>The C++ and Slate manager centres on mod plugins. Searchable cards expose selection controls, icons, metadata and Forge actions. Clicking an icon opens the plugin’s content root. Information and configuration interfaces cover names, authors, descriptions, versions, links, dependencies and packaging settings.</p>
+
+<p>Each mod has its own Unreal plugin namespace. That makes ownership easier to understand: the mod’s content is separate from mounted game references, while explicit replacement assets can still target original paths.</p>
+
+<figure class="pd3-figure">
+  <a href="/assets/images/blogs/pd3-modkit/crimeforge-dashboard.webp" class="image-popup" aria-label="View full-size image: CrimeForge mod manager showing plugin cards and Forge controls inside Unreal Editor">
+    <img src="/assets/images/blogs/pd3-modkit/crimeforge-dashboard.webp" alt="CrimeForge mod manager showing plugin cards and Forge controls inside Unreal Editor" width="659" height="435" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>The editor interface organises the tasks creators repeat: finding a mod, configuring it, checking it and producing a build.
+</figcaption>
+</figure>
+
+<p>The three current templates are Blank, Logic Mod and Custom Heist. Blank creates the plugin and standard assets, including <code class="language-plaintext highlighter-rouge">PAL_&lt;ModName&gt;</code> and <code class="language-plaintext highlighter-rouge">DA_&lt;ModName&gt;</code>. Logic Mod adds a <code class="language-plaintext highlighter-rouge">ModActorBase</code> Blueprint and registers it. Custom Heist creates a <code class="language-plaintext highlighter-rouge">PD3HeistDataAsset</code>, a level such as <code class="language-plaintext highlighter-rouge">LVL_&lt;ModName&gt;</code>, and the initial registration and level-path references.</p>
+
+<p>Those connections are repetitive but consequential. Automating them lets authors start with a coherent foundation. HUD and audio templates are planned additions. Compatible legacy UE4 or non-CrimeForge imports can also help migrate content, but conversion cannot guarantee that every older mod will work in UE5.</p>
+
+<p>Validation is part of the interface design. CrimeForge checks Primary Asset Labels, Asset Manager registration, chunk configuration, explicit assets, dependencies and leftover template references before starting the longer cook. Errors block the operation; warnings identify conditions to review. Fix Issues repairs recognised configuration problems where safe, while references requiring an author’s decision remain visible.</p>
+
+<h2 id="why-forge-needs-two-cooking-paths">Why Forge needs two cooking paths</h2>
+
+<p>Forge is the name of CrimeForge’s build operation. It validates a mod, resolves its packaging configuration, cooks the required content and produces a complete PDML-compatible plugin. The interesting difficulty is that a plugin’s own content and a base-game replacement do not share the same content root.</p>
+
+<p>A mod containing only <code class="language-plaintext highlighter-rouge">/MyMod/...</code> assets can follow the plugin packaging path. A replacement for <code class="language-plaintext highlighter-rouge">/Game/...</code> must preserve the original package path so the game can resolve it as intended. Packaging only the plugin root does not solve that second case.</p>
+
+<p>CrimeForge uses Primary Asset Labels and their Explicit Assets list to describe what belongs in a build. Chunk IDs need to avoid game and DLC values; the documentation recommends values above <code class="language-plaintext highlighter-rouge">100</code>.</p>
+
+<p>When external replacements are present, Forge performs a plugin cook and an additional project cook for the required replacement content, then combines the selected cooked output into the final plugin structure. Plugin-only mods skip the extra pass. This keeps the ordinary case simpler while accommodating mods that mix new content with replacements.</p>
+
+<p>The public <code class="language-plaintext highlighter-rouge">PackagePlugin</code> automation also makes the second pass explicit through a packaging manifest. It records external cook packages and the expected chunk package set, validates their relationship, and rejects ambiguous input. That matters because mounted base-game dependencies should remain references rather than becoming an uncontrolled set of extra cook targets. The <a href="https://payday3-modding.github.io/Documentation/payday3-modding/crimeforge/packaging.html">Forge documentation</a> and <a href="https://github.com/PAYDAY3-Modding/PD3-Modkit/blob/main/Plugins/CrimeForge/Source/CrimeForge.Automation/PackagePlugin.cs">automation source</a> cover this boundary.</p>
+
+<p>The pipeline uses Unreal Automation Tool and custom <code class="language-plaintext highlighter-rouge">CrimeForge.Automation</code> tooling, with preparation for missing or stale automation components. Output can include <code class="language-plaintext highlighter-rouge">.pak</code>, <code class="language-plaintext highlighter-rouge">.utoc</code> and <code class="language-plaintext highlighter-rouge">.ucas</code> containers, retained inside a complete plugin. Forge also produces a distribution archive and can copy the mod to the game and launch it for testing. Storefront-specific launching still needs additional validation.</p>
+
+<h2 id="pdml-carrying-the-workflow-into-the-game">PDML: carrying the workflow into the game</h2>
+
+<p>CrimeForge’s output needs a matching runtime contract. PDML is the loader and integration framework I rebuilt for UE5, now available in public early access.</p>
+
+<p>Mods are installed as complete folders, for example <code class="language-plaintext highlighter-rouge">PAYDAY3/Mods/MyMod/MyMod.uplugin</code>. Keeping descriptors, cooked assets and supporting content together gives the loader a clear discovery boundary, separate from the game’s own <code class="language-plaintext highlighter-rouge">Content/Paks/</code> directory. The Modkit includes PDML development assets so authors can reference its exposed Blueprint APIs.</p>
+
+<p>PDML provides supported registration and initialization for Blueprint logic mods, UI, settings and custom-heist content. For players, its most visible parts are the main-menu Mod Manager and integrated settings. They can inspect installed compatible mods, read metadata and open download pages. Supported mods can expose their own configuration inside the game.</p>
+
+<figure class="pd3-figure">
+  <a href="/assets/images/blogs/pd3-modkit/modmanager.webp" class="image-popup" aria-label="View full-size image: PAYDAY 3&#39;s main menu with the PDML Mod Manager entry">
+    <img src="/assets/images/blogs/pd3-modkit/modmanager.webp" alt="PAYDAY 3&#39;s main menu with the PDML Mod Manager entry" width="2560" height="1440" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>PDML brings mod information into the game’s interface. This screenshot shows the public implementation rather than a future browser concept.
+</figcaption>
+</figure>
+
+<figure class="pd3-figure">
+  <a href="/assets/images/blogs/pd3-modkit/settings.webp" class="image-popup" aria-label="View full-size image: PDML&#39;s integrated in-game mod settings interface">
+    <img src="/assets/images/blogs/pd3-modkit/settings.webp" alt="PDML&#39;s integrated in-game mod settings interface" width="2560" height="1440" loading="lazy" decoding="async" />
+  </a>
+  <figcaption>Shared developer-facing settings support becomes a player-facing configuration interface.
+</figcaption>
+</figure>
+
+<p>That combination builds on my HUDCore and VanillaHUD+ work. A common framework can reduce how much surrounding integration each HUD author needs to recreate. It does not automatically restore the original HUD’s widget logic.</p>
+
+<p>Custom heists benefit from the same connection: inspect supported levels, author a new level using reflected classes and heist data, Forge it, then register it through PDML. This is a foundation for more accessible heist development. Advanced navigation, AirNav and some game-specific behaviours still need compatibility work.</p>
+
+<h2 id="the-remaining-runtime-boundary">The remaining runtime boundary</h2>
+
+<p>One ongoing challenge is controlled runtime plugin management through the <code class="language-plaintext highlighter-rouge">SBZModloader</code> subsystem work. Discovering a descriptor, mounting cooked containers and registering a content mount point do not automatically make every asset discoverable to the Asset Registry.</p>
+
+<p>Startup-loaded plugins and plugins introduced after the game is running can take different paths. Resolving that involves plugin activation, registry data and runtime asset discovery together. I am treating this as ongoing engineering, not a claim that reliable dynamic mounting, unloading or hot-swapping already ships.</p>
+
+<p>Load ordering, enable/disable controls and stronger dependency management remain planned or under consideration. ModWorkshop integration has been prototyped, but in-game browsing, downloads and updates are future work. Further additive inventory content is another direction, rather than a blanket promise of support for every new weapon, mask or outfit.</p>
+
+<h2 id="documentation-feedback-and-recognition">Documentation, feedback and recognition</h2>
+
+<p>The environment needs to be usable by people who did not build it. Our Antora and AsciiDoc documentation connects installation, FModel and Wwise setup, JMAP generation, editor configuration, templates, validation, replacement authoring and runtime testing. A beginner should have a repeatable route to a first mod without first learning every engine detail involved.</p>
+
+<p>Community testing has helped expose unsupported assets, setup problems and storefront differences. The <a href="https://payday3-modding.github.io/Documentation/payday3-modding/announcement.html#_contributions">announcement’s contributor list</a> credits Capcake, Pinki_Ninja, Columbus, DrProtogen, Braidy08 and Gordon Greedman across documentation, compatibility work and testing. FlamingFury1000 also contributed future interface concepts, which are separate from the current UI pictured here.</p>
+
+<p>One of the most encouraging parts has been seeing Starbreeze acknowledge what we’ve been building. They’ve been positive about the work and have shown interest in supporting it further. I can’t share additional details at this stage, but having the game’s developers recognise the effort means a lot. This remains a community-developed toolchain.</p>
+
+<p>Working across these systems has reinforced a practical lesson for me: compatibility needs to hold from inspection through packaging to runtime use. An asset appearing in the editor is only one milestone. Clear validation, understandable interfaces and good documentation are part of making that technical capability useful to someone else.</p>
+
+<p>There is more to do on asset coverage, complex widget reconstruction, runtime discovery and custom-heist systems. The foundation now brings authoring, packaging and in-game integration much closer together. The goal is to give creators more time to build modifications that were previously difficult or impractical, and less time reconstructing the environment around them.</p>
+
+<p>The <a href="https://github.com/PAYDAY3-Modding/PD3-Modkit">Modkit repository</a>, <a href="https://payday3-modding.github.io/Documentation/payday3-modding/index.html">documentation</a> and <a href="https://modworkshop.net/mod/59255">PDML release</a> are available publicly. My <a href="/portfolio/payday3-modding/">earlier UE4 modding project</a> and <a href="/blog/vanillahudplus/">VanillaHUD+ article</a> cover the work that led here.</p>
+
+<p>All screenshots in this article come from the <a href="https://payday3-modding.github.io/Documentation/payday3-modding/announcement.html">public community announcement</a>. The social preview uses the banner from the <a href="https://modworkshop.net/mod/59255?tab=images">PDML ModWorkshop page</a>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2026-10-14T23:00:00+00:00">October 14, 2026</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://twitter.com/intent/tweet?text=Rebuilding+PAYDAY+3+Modding+for+Unreal+Engine+5%20https%3A%2F%2Fnadzw.github.io%2Fblog%2Frebuilding-payday3-modding%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnadzw.github.io%2Fblog%2Frebuilding-payday3-modding%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://nadzw.github.io/blog/rebuilding-payday3-modding/" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/voxel-3d-ui-map/" class="pagination--pager" title="Building a Death Stranding 2-style Voxel 3D Map in Unreal Engine 5">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You may also enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/images/card-voxel.webp" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/voxel-3d-ui-map/" rel="permalink">Building a Death Stranding 2-style Voxel 3D Map in Unreal Engine 5
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How I built a fully procedural, artist-asset-free 3D voxel map for COLDLIGHT’s map screen - hemisphere capture, occluder culling, a 673K-instance editor free...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/easy-icon-font/" rel="permalink">Building Easy Icon Font: Fonts, COLR Glyphs, and the Bug That Made Every Icon Render Twice
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How an in-editor Unreal tool for baking PNG/SVG icons into real font glyphs turned into mono-vector outlines, multi-layer COLR/CPAL color glyphs, a double-ex...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/mover-cover-system/" rel="permalink">Building the Mover Cover System
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How I built a network-predicted cover system on Unreal Engine’s experimental Mover plugin - wall classification, corners, gaps, a quaternion bug, and NetSeri...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/nightshift-devlog/" rel="permalink">Nightshift: From Getaway Driver to Elimination Circuit
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">How Nightshift went from a Crazy Taxi-style prototype to a roguelite street racing tournament - vehicles, rendering, race framework, AI, UI, and the scope pi...</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://nadzw.itch.io" rel="nofollow noopener noreferrer"><i class="fa-brands fa-itch-io" aria-hidden="true"></i> Itch.io</a></li>
+        
+      
+        
+          <li><a href="https://github.com/NadzW" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/nadeem-wali-709707277/" rel="nofollow noopener noreferrer"><i class="fa-brands fa-linkedin" aria-hidden="true"></i> LinkedIN</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://nadzw.github.io">Nadeem Wali</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
